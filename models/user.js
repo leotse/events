@@ -51,31 +51,27 @@ schema.statics.create = function(args, callback) {
 };
 
 // static to login a user
-schema.statics.login = function(username, password, callback) {
+schema.statics.login = function(id, password, callback) {
   var User = this.model('User');
 
   // find the user
   User.findOne()
-    .select('cid username fullname email joined hash salt')
-    .where('username', username)
+    .select('cid id email first last joined hash salt')
+    .where('id', id)
     .exec(function(err, user) {
-      if(err) callback(error.dbError(err));
-      else if(!user) callback(error.userNotFound());
-      else {
+      if(err) return callback(err);
+      if(!user) return callback(new Error('The username or password you entered is incorrect'));
 
-        // check the password!
-        var salt = user.salt
-        var hash = helpers.hash(password, salt);
+      // check the password!
+      var salt = user.salt;
+      var hash = helpers.hash(password, salt);
+      if(hash !== user.hash) return callback(new Error('The username or password you entered is incorrect'));
 
-        if(hash !== user.hash) return callback(error.passwordMismatch());
-        else { 
-          // remove unwanted fields
-          var userdoc = user._doc;
-          delete userdoc.salt;
-          delete userdoc.hash;
-          return callback(null, userdoc);
-        }
-      }
+      // remove secret fields then return
+      var userObj = user.toObject();
+      delete userObj.salt;
+      delete userObj.hash;
+      callback(null, userObj);
   });
 };
 

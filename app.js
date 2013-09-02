@@ -36,6 +36,8 @@ if ('development' == app.get('env')) {
 app.get('/', routes.index);
 app.get('/register', userRoutes.register);
 app.post('/register', userRoutes.create);
+app.get('/login', userRoutes.login);
+app.post('/login', userRoutes.authenticate);
 
 // connect to db then start server
 // connect to db

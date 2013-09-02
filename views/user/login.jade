@@ -1,0 +1,25 @@
+extends ../layout
+
+block content
+
+  //- variables
+  - var id = user ? user.id : ''
+
+  //- title
+  h1 login
+
+  //- register form
+  form(class="login", method="POST", action="/login")
+    ul
+      li 
+        input(type="text", name="id", placeholder="User ID", value="#{id}")
+      li
+        input(type="password", name="password", placeholder="Password")
+      li 
+        input(type="submit", value="login")
+
+  //- errors if any
+  if errors
+    div.error
+      each error in errors
+        span= error.msg

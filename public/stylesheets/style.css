@@ -5,6 +5,9 @@ a { color: #00B7FF; }
 /* Register Form */
 form.register ul { margin: 0; padding: 0; list-style: none; }
 
+/* Login Form */
+form.login ul { margin: 0; padding: 0; list-style: none; }
+
 /* Register Form Error */
 .error { color: red; }
 .error p { margin: 0; padding: 0; }
