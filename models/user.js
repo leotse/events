@@ -3,7 +3,6 @@
 ////////////////
 
 // libs
-var crypto = require('crypto');
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var ObjectId = Schema.ObjectId;
@@ -24,11 +23,12 @@ var schema = new Schema({
 }, { strict: true });
 
 // indexes definition
+schema.index({ 'id': 1 }, { unique: true });
 
 // virtuals to change password
 schema.virtual('password').set(function(password) {
-  var salt = crypto.rand();
-  var hash = crypto.hash(password, salt); 
+  var salt = helpers.rand();
+  var hash = helpers.hash(password, salt); 
   this.salt = salt;
   this.hash = hash;
 });
@@ -57,7 +57,7 @@ schema.statics.login = function(username, password, callback) {
 
         // check the password!
         var salt = user.salt
-        var hash = crypto.hash(password, salt);
+        var hash = helpers.hash(password, salt);
 
         if(hash !== user.hash) return callback(error.passwordMismatch());
         else { 
@@ -72,4 +72,4 @@ schema.statics.login = function(username, password, callback) {
 };
 
 // export
-module.exports = schema;
+module.exports = mongoose.model('User', schema);
