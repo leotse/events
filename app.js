@@ -7,6 +7,7 @@ var http = require('http');
 var path = require('path');
 var mongoose = require('mongoose');
 var express = require('express');
+var MongoStore = require('connect-mongo')(express);
 var validator = require('express-validator');
 var flash = require('connect-flash');
 var ensureAuth = require('connect-ensure-login').ensureLoggedIn;
@@ -34,7 +35,10 @@ app.use(express.logger('dev'));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.cookieParser());
 app.use(express.bodyParser());
-app.use(express.session({ secret: 'super_secret_sessions' }));
+app.use(express.session({ 
+  secret: config.session.secret,
+  store: new MongoStore({ url: config.session.db })
+}));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(validator());
@@ -53,7 +57,11 @@ app.get('/', ensureAuth('/login'), routes.index);
 app.get('/register', userRoutes.register);
 app.post('/register', userRoutes.create);
 app.get('/login', userRoutes.login);
-app.post('/login', passport.authenticate('local', { successReturnToOrRedirect: '/', failureRedirect: '/login', failureFlash: true }));
+app.post('/login', passport.authenticate('local', { 
+  successReturnToOrRedirect: '/', 
+  failureRedirect: '/login', 
+  failureFlash: true 
+}));
 
 // connect to db then start web server
 mongoose.connect(config.db, function(err) {

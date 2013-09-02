@@ -12,19 +12,6 @@ routes.login = function(req, res) {
   res.render('user/login', { errors: req.flash('error') });
 };
 
-// POST /login
-routes.authenticate = function(req, res) {
-  var body = req.body;
-  var id = body.id;
-  var pass = body.password;
-
-  User.login(id, pass, function(err, user) {
-    if(err) return onDBError(req, res, err, 'user/login');
-    if(!user) return onDBError(req, res, new Error('The username or password you entered is incorrect'), 'user/login');
-    res.redirect('/');
-  });
-};
-
 // GET /register
 routes.register = function(req, res) {
   res.render('user/register');
