@@ -8,10 +8,11 @@ var Schema = mongoose.Schema;
 var ObjectId = Schema.ObjectId;
 var helpers = require('./helpers')
 
-// schema definition
+// define schema
 var schema = new Schema({
 
   id: { type: String, required: true },
+  email: { type: String, required: true },
   first: { type: String, required: true },
   last: { type: String, required: true },
   joined: { type: Date, default: Date.now },
@@ -22,10 +23,11 @@ var schema = new Schema({
 
 }, { strict: true });
 
-// indexes definition
+// define indexes
 schema.index({ 'id': 1 }, { unique: true });
+schema.index({ 'email': 1 }, { unique: true });
 
-// virtuals to change password
+// virtual to generate the hash and salt when setting the password
 schema.virtual('password').set(function(password) {
   var salt = helpers.rand();
   var hash = helpers.hash(password, salt); 
@@ -33,6 +35,12 @@ schema.virtual('password').set(function(password) {
   this.hash = hash;
 });
 
+// sanitize the user id and email before saving
+schema.pre('save', function(next) {
+  this.id = this.id.trim().toLowerCase();
+  this.email = this.email.trim().toLowerCase();
+  next();
+});
 
 // static to create a user
 schema.statics.create = function(args, callback) {

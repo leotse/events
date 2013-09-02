@@ -4,9 +4,9 @@ block content
 
   //- hepler variables
   - var id = user ? user.id : ''
+  - var email = user ? user.email : ''
   - var first = user ? user.first : ''
   - var last = user ? user.last : ''
-  - var test = user
 
   //- title
   h1 register
@@ -24,6 +24,8 @@ block content
     ul
       li 
         input(type="text", name="id", placeholder="User ID", value="#{id}")
+      li
+        input(type="text", name="email", placeholder="Email", value="#{email}")
       li 
         input(type="text", name="first", placeholder="First Name", value="#{first}")
       li 
