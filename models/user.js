@@ -60,12 +60,12 @@ schema.statics.login = function(id, password, callback) {
     .where('id', id)
     .exec(function(err, user) {
       if(err) return callback(err);
-      if(!user) return callback(new Error('The username or password you entered is incorrect'));
+      if(!user) return callback(null, false);
 
       // check the password!
       var salt = user.salt;
       var hash = helpers.hash(password, salt);
-      if(hash !== user.hash) return callback(new Error('The username or password you entered is incorrect'));
+      if(hash !== user.hash) return callback(null, false);
 
       // remove secret fields then return
       var userObj = user.toObject();

@@ -9,7 +9,7 @@ var User = require('../models/user');
 
 // GET /login
 routes.login = function(req, res) {
-  res.render('user/login');
+  res.render('user/login', { errors: req.flash('error') });
 };
 
 // POST /login
@@ -20,6 +20,7 @@ routes.authenticate = function(req, res) {
 
   User.login(id, pass, function(err, user) {
     if(err) return onDBError(req, res, err, 'user/login');
+    if(!user) return onDBError(req, res, new Error('The username or password you entered is incorrect'), 'user/login');
     res.redirect('/');
   });
 };
@@ -56,8 +57,6 @@ routes.create = function(req, res) {
     res.redirect('/');
   });
 };
-
-// POST /login
 
 /////////////
 // Helpers //
