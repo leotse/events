@@ -16,8 +16,8 @@ block content
         form.event(method="POST", action="/events")
           input(type="hidden", name="_method", value="delete")
           input(type="hidden", name="_id", value="#{event._id}")
-          span= event.name
-          span= event.desc
-          span #{event.start} - #{event.end}
-          span= event.tags
+          span.title= event.name
+          span.desc= event.desc
+          span.dates #{event.start} - #{event.end}
+          span.tags= event.tags
           input(type="submit", value="delete")

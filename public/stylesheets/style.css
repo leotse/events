@@ -1,22 +1,25 @@
 /* General */
-body { padding: 50px; font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;}
-a { color: #00B7FF; }
+body { padding:50px; font:14px "Lucida Grande", Helvetica, Arial, sans-serif;}
+a { color:#00B7FF; }
 
 /* Register Form */
-form.register ul { margin: 0; padding: 0; list-style: none; }
+form.register ul { margin:0; padding:0; list-style:none; }
 
 /* Register Form Error */
-.error { color: red; }
-.error p { margin: 0; padding: 0; }
-.error ul { margin: 0 0 15px 0; }
+.error { color:red; }
+.error p { margin:0; padding:0; }
+.error ul { margin:0 0 15px 0; }
 
 /* Login Form */
-form.login ul { margin: 0; padding: 0; list-style: none; }
+form.login ul { margin:0; padding:0; list-style:none; }
 
 /* Event Form */
-form.event ul { margin: 0; padding: 0; list-style: none; }
+form.event ul { margin:0; padding:0; list-style:none; }
 
 /* Events List */
-.events { margin: 0; padding: 0; list-style: none; }
-.events .event { margin: 0 0 10px 0; background-color: #f0f0f0; }
-.events .event span { display: block; }
+.events { margin:0; padding:0; list-style:none; }
+.events .event { margin:0 0 10px 0; background-color:#f0f0f0; }
+.events .event span { display:block; }
+.events .event span.title { font-weight:900; }
+.events .event span.desc { font-weight:100; }
+.events .event span.tags { font-style:oblique; }
