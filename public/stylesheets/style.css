@@ -1,8 +1,11 @@
-body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
-}
+/* General */
+body { padding: 50px; font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;}
+a { color: #00B7FF; }
 
-a {
-  color: #00B7FF;
-}
+/* Register Form */
+form.register ul { margin: 0; padding: 0; list-style: none; }
+
+/* Register Form Error */
+.error { color: red; }
+.error p { margin: 0; padding: 0; }
+.error ul { margin: 0 0 15px 0; }

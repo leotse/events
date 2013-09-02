@@ -1,0 +1,32 @@
+extends ../layout
+
+block content
+
+  //- hepler variables
+  - var id = user ? user.id : ''
+  - var first = user ? user.first : ''
+  - var last = user ? user.last : ''
+  - var test = user
+
+  //- title
+  h1 register
+
+  //- errors if any
+  if errors
+    div.error
+      p There are some problems with the following fields =)
+      ul
+        each error in errors
+          li= error.msg
+
+  //- register form
+  form(class="register", method="POST", action="/register")
+    ul
+      li 
+        input(type="text", name="id", placeholder="User ID", value="#{id}")
+      li 
+        input(type="text", name="first", placeholder="First Name", value="#{first}")
+      li 
+        input(type="text", name="last", placeholder="Last Name", value="#{last}")
+      li 
+        input(type="submit", value="register")

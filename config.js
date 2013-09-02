@@ -10,7 +10,7 @@ var env = process.env.NODE_ENV || 'development';
 if(env === 'production') {
 
 	// prod environment
-	config.db = 
+	config.db = null;
 	config.instagram = {
 		key: null,
 		secret: null,
@@ -20,6 +20,7 @@ if(env === 'production') {
 } else { 
 
 	// dev environment
+	config.db = 'mongodb://localhost/ievents';
 	config.instagram = {
 		key: 'de7ec4f7c3094d58868781fa776a7051',
 		secret: 'd56cf05ae65e4feab05e08bfacab5194',
