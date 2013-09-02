@@ -59,6 +59,7 @@ app.get('/', ensureAuth('/login'), routes.index);
 app.get('/events/add', ensureAuth('/login'), eventRoutes.addView);
 app.get('/events', ensureAuth('/login'), eventRoutes.list);
 app.put('/events', ensureAuth('/login'), eventRoutes.add);
+app.del('/events', ensureAuth('/login'), eventRoutes.del);
 
 // auth routes
 app.get('/register', userRoutes.register);

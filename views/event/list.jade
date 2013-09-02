@@ -10,5 +10,14 @@ block content
     a(href="/events/add") add
 
   //- list of events
-  each event in events
-    div= JSON.stringify(event)
+  ul.events
+    each event in events
+      li
+        form.event(method="POST", action="/events")
+          input(type="hidden", name="_method", value="delete")
+          input(type="hidden", name="_id", value="#{event._id}")
+          span= event.name
+          span= event.desc
+          span #{event.start} - #{event.end}
+          span= event.tags
+          input(type="submit", value="delete")
