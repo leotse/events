@@ -1,0 +1,14 @@
+extends ../layout
+
+block content
+
+  //- title
+  h1 events
+
+  //- add
+  p
+    a(href="/events/add") add
+
+  //- list of events
+  each event in events
+    div= JSON.stringify(event)

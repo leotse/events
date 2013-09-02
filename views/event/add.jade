@@ -1,0 +1,38 @@
+extends ../layout
+
+block content
+
+  //- variables
+  - var name = event ? event.name : ''
+  - var desc = event ? event.desc : ''
+  - var start = event ? event.start : ''
+  - var end = event ? event.end : ''
+  - var hashtags = event ? event.hashtags : []
+
+  //- title
+  h1 add event
+
+  //- errors if any
+  if errors
+    div.error
+      p There are some problems with the following fields =)
+      ul
+        each error in errors
+          li= error.msg
+
+  //- create event form
+  form(class="event", method="POST", action="/events")
+    input(type="hidden", name="_method", value="put")
+    ul
+      li 
+        input(type="text", name="name", placeholder="Event Name", value="#{name}")
+      li
+        input(type="text", name="desc", placeholder="Description", value="#{desc}")
+      li
+        input(type="text", name="start", placeholder="Start Date", value="#{start}")
+      li
+        input(type="text", name="end", placeholder="End Date", value="#{end}")
+      li
+        input(type="text", name="hashtags", placeholder="Hashtags", value="#{hashtags}")
+      li 
+        input(type="submit", value="add")

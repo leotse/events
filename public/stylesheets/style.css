@@ -8,6 +8,9 @@ form.register ul { margin: 0; padding: 0; list-style: none; }
 /* Login Form */
 form.login ul { margin: 0; padding: 0; list-style: none; }
 
+/* Event Form */
+form.event ul { margin: 0; padding: 0; list-style: none; }
+
 /* Register Form Error */
 .error { color: red; }
 .error p { margin: 0; padding: 0; }

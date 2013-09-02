@@ -5,21 +5,20 @@ block content
   //- title
   h1 login
 
-  //- errors if any
-  if errors
-    div.error
-      each error in errors
-        span= error
-
-  //- register form
-  form(class="login", method="POST", action="/login")
-    ul
-      li 
-        input(type="text", name="username", placeholder="User ID")
-      li
-        input(type="password", name="password", placeholder="Password")
-      li 
-        input(type="submit", value="login")
-
+  //- register
   p
     a(href="/register") register
+
+  //- login form
+  form(class="login", method="POST", action="/login")
+    div
+      input(type="text", name="username", placeholder="User ID")
+    div
+      input(type="password", name="password", placeholder="Password")
+    //- errors if any
+    if errors
+      div.error
+        each error in errors
+          span= error
+    div 
+      input(type="submit", value="login")

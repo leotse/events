@@ -16,6 +16,7 @@ var local = require('passport-local');
 var auth = require('./helpers/auth');
 var routes = require('./routes');
 var userRoutes = require('./routes/user');
+var eventRoutes = require('./routes/event');
 var config = require('./config');
 
 // init express app
@@ -43,6 +44,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(validator());
 app.use(flash());
+app.use(express.methodOverride());
 app.use(app.router);
 
 // development only
@@ -50,10 +52,15 @@ if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
 
-// routes
+// general routes
 app.get('/', ensureAuth('/login'), routes.index);
 
-// auth related routes
+// event routes
+app.get('/events/add', ensureAuth('/login'), eventRoutes.addView);
+app.get('/events', ensureAuth('/login'), eventRoutes.list);
+app.put('/events', ensureAuth('/login'), eventRoutes.add);
+
+// auth routes
 app.get('/register', userRoutes.register);
 app.post('/register', userRoutes.create);
 app.get('/login', userRoutes.login);
