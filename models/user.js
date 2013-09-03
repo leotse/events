@@ -5,7 +5,6 @@
 // libs
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
-var ObjectId = Schema.ObjectId;
 var helpers = require('./helpers')
 
 // define schema

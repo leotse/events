@@ -7,7 +7,7 @@ block content
   - var desc = event ? event.desc : ''
   - var start = event ? event.start : ''
   - var end = event ? event.end : ''
-  - var hashtags = event ? event.hashtags : []
+  - var tag = event ? event.tag : ''
 
   //- title
   h1 add event
@@ -33,6 +33,6 @@ block content
       li
         input(type="text", name="end", placeholder="End Date", value="#{end}")
       li
-        input(type="text", name="hashtags", placeholder="Hashtags", value="#{hashtags}")
+        input(type="text", name="tag", placeholder="#hashtag (without #)", value="#{tag}")
       li 
         input(type="submit", value="add")

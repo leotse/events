@@ -34,6 +34,7 @@ routes.add = function(req, res) {
   req.assert('desc', 'Description not be empty').notEmpty();
   req.assert('start', 'Invalid start date').isDate();
   req.assert('end', 'Invalid end date').isDate();
+  req.assert('tag', 'Tag must be alphanumeric').isAlphanumeric();
 
   // back to register page if there are errors
   var errors = req.validationErrors();
