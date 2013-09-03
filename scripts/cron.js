@@ -6,11 +6,13 @@
 
 // libs
 var async = require('async');
+var moment = require('moment');
 var mongoose = require('mongoose');
 var config = require('../config');
 var Event = require('../models/event');
 var Medium = require('../models/medium');
 var insta = require('../helpers/instagram');
+var TagClient = insta.TagClient;
 
 // connect to db before doing anyting
 mongoose.connect(config.db, start);
@@ -37,15 +39,15 @@ function start(err) {
 // process an event
 function processEvent(ev, complete) {
 
-  console.log('process event');
+  console.log('processing event %s', ev.name);
   async.waterfall([
 
     // first get the media
-    function(done) { insta.tag(ev.tag, done); },
+    function(done) { downloadMedia(ev, done); },
 
     // then process the instagram data
     function(media, done) {
-      async.eachSeries(media.data(), function(medium, mediumDone) {
+      async.eachSeries(media, function(medium, mediumDone) {
         processMedium(ev, medium, mediumDone);
       }, done);
     },
@@ -56,12 +58,44 @@ function processEvent(ev, complete) {
   ], complete);
 }
 
+// downloads all availabe media for this event
+function downloadMedia(ev, complete) {
+  var client = new TagClient(ev.tag);
+  var results = [];
+  var currentMedia = null;
+
+  async.doWhilst(
+
+    // the action - downloads the next page of data from instagram
+    function(done) {
+      console.log(client.url);
+      client.fetch(function(err, media) {
+        if(err) return done(err);
+        currentMedia = media;
+        results = results.concat(media.data());
+        done();
+      });
+    },
+
+    // since the instagram response is always in reverse chronological order, i.e. newest comes first
+    // if the oldest entry of the current instagram response is newer than the start date of the event
+    // then we want to download the next page of data!
+    function() { return client.url && currentMedia.startDate() > ev.start; },
+
+    // gets called when there's an error or when download is complete
+    function(err) {
+      if(err) return complete(err);
+      complete(null, results);
+    }
+  );
+}
+
 // process a single medium (image or video)
 function processMedium(ev, medium, complete) {
 
   // make sure the image/video is in the event date range
-  var created = new Date(medium.created_time * 1000);
-  if(ev.start < created && created < ev.end) {
+  var created = moment(medium.created_time * 1000).startOf('day').toDate();
+  if(ev.start <= created && created <= ev.end) {
 
     // add this image/video to the event
     ev.media.addToSet(medium.id);

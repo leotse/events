@@ -18,8 +18,13 @@ form.event ul { margin:0; padding:0; list-style:none; }
 
 /* Events List */
 .events { margin:0; padding:0; list-style:none; }
-.events .event { margin:0 0 10px 0; background-color:#f0f0f0; }
-.events .event span { display:block; }
-.events .event span.title { font-weight:900; }
-.events .event span.desc { font-weight:100; }
-.events .event span.tags { font-style:oblique; }
+.event { margin:0 0 10px 0; padding:10px; background-color:#f0f0f0; }
+.event a:link { text-decoration:none; }
+.event span { display:block; margin:0 0 2px 0; }
+.event span.title { font-weight:900; }
+.event span.desc { font-weight:100; }
+.event span.tags { font-style:oblique; }
+
+/* Media List */
+.media { margin:0; padding:0; list-style:none; }
+.media img { margin:0; padding:0; float:left; }

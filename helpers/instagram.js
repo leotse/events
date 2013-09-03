@@ -12,31 +12,58 @@ var config = require('../config');
 
 // endpoints
 var BASE = 'https://api.instagram.com/v1';
-var TAG = BASE + '/tags/%s/media/recent?hello=world';
+var TAG = BASE + '/tags/%s/media/recent';
 
-// get latest media by tag
-insta.tag = function(tag, callback) {
-  var url = getUrl(TAG, tag);
-  request({ url: url, json: true }, function(e, r, b) {
-    if(e) return onError(e, callback);
-    if(r.statusCode !== 200) return onAPIError(r.statusCode, body, callback);
-    callback(null, new InstaMedia(b));
-  });
-};
 
 /////////////
 // Classes //
 /////////////
 
+insta.TagClient = function(tag) {
+  var self = this;
+
+  // instagram api url
+  this.url = getUrl(TAG, tag);
+
+  // fetches the next page of data from instagram api
+  this.fetch = function(callback) {
+    request({ url: self.url, json: true }, function(e, r, b) {
+      if(e) return onError(e, callback);
+      if(r.statusCode !== 200) return onAPIError(r.statusCode, body, callback);
+
+      // update fetch url to handle paging
+      var media = new InstaMedia(b);
+      self.url = media.nextUrl();
+      callback(null, media);
+    });
+  }
+
+}
+
 // wrapper class for the instagram response, mainly to handle pagination
 function InstaMedia(json) {
   if(!json) throw new Error('api respones json required to instantiate InstaResponse');
 
-  // media getter
-  this.data = function() { return json.data; }
+  var self = this;
 
-  // pagination getter
-  this.pagination = function() { return json.pagination; }
+  // next url getter
+  this.nextUrl = function() { return json.pagination.next_url; };
+
+  // end date getter
+  this.endDate = function() { 
+    var data = self.data();
+    return new Date(data[0].created_time * 1000); 
+  };
+
+  // start date getter
+  this.startDate = function() { 
+    var data = self.data();
+    var lasti = data.length - 1;
+    return new Date(data[lasti].created_time * 1000); 
+  };
+
+  // media getter
+  this.data = function() { return json.data; };
 
   // returns the raw json response
   this.toJSON = function() { return json; };

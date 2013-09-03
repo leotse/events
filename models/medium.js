@@ -12,6 +12,7 @@ var schema = new Schema({
 
   id: { type: String, required: true },
   type: { type: String, reuqired: true }, 
+  created_time: { type: Number, required: true },
   tags: [ String ],
   location: String,
   user: Mixed,
@@ -19,12 +20,12 @@ var schema = new Schema({
   likes: Mixed,
   images: Mixed,
   caption: Mixed,
-  users_in_photos: [ Mixed ],
+  users_in_photos: [ Mixed ]
 
 }, { strict: false, _id: false });
 
 // indexes definition
-schema.index({ id: 1 }, { unique: true });
+schema.index({ id: 1, created_time: -1 }, { unique: true });
 
 // export
 module.exports = mongoose.model('Medium', schema);

@@ -7,6 +7,7 @@ var routes = {};
 var async = require('async');
 var resh = require('../helpers/res');
 var Event = require('../models/event');
+var Media = require('../models/medium');
 
 // GET /events
 routes.list = function(req, res) {
@@ -17,9 +18,41 @@ routes.list = function(req, res) {
     .where('_owner', user._id)
     .sort({ $natural: 1 })
     .exec(function(err, events) {
+      if(err) return resh.send(res, err);
       res.render('event/list', { events: events });
     });
 };
+
+// GET /events/:_id
+routes.get = function(req, res) {
+  async.auto({
+
+    // first get the event object
+    event: function(done) { Event.findById(req.params._id, done); },
+
+    // then get the media associated to this event
+    media: [ 'event', function(done, results) {
+      var event = results.event;
+
+      // make sure event is found
+      if(!event) return done(new Error('event not found'));
+
+      // and get all the media for this event
+      Media.find()
+        .where('id').in(event.media)
+        .sort('-created_time')
+        .exec(done);
+    }]
+
+  }, function(err, results) {
+    if(err) return resh.send(res, err);
+
+    // finally render the page!
+    var event = results.event;
+    var media = results.media;
+    res.render('event/get', { event: event, media: media });
+  });
+}
 
 // GET /events/add
 routes.addView = function(req, res) {

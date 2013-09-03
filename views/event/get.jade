@@ -1,0 +1,21 @@
+extends ../layout
+
+block content
+
+  //- title
+  h1 events
+
+  //- event details
+  div.event
+    span.title= event.name
+    span.desc= event.desc
+    span.dates #{event.start} - #{event.end}
+    span.tag &#35;#{event.tag}
+
+  //- event media
+  div.media
+    if media.length > 0
+      each medium in media
+          img(src="#{medium.images.thumbnail.url}")
+    else
+      div no images at this time
