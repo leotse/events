@@ -24,8 +24,7 @@ insta.TagClient = function(tag) {
   var self = this;
 
   // instagram api url
-  //this.url = getUrl(TAG, tag);
-  this.url = 'https://api.instagram.com/v1/tags/wedding/media/recent?client_id=de7ec4f7c3094d58868781fa776a7051&max_tag_id=1378210224540';
+  this.url = getUrl(TAG, tag);
 
   // fetches the next page of data from instagram api
   this.fetch = function(callback) {
@@ -66,6 +65,9 @@ function InstaMedia(tag, json) {
 function InstaMedium(tag, data) {
   if(!data) throw new Error('InstaMedia json required to instantiate InstaMedium object');
   var self = this;
+
+  // data getter
+  this.data = data;
 
   // gets the tagged date for this medium
   this.getTagDate = function() {

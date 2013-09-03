@@ -96,16 +96,16 @@ function downloadMedia(ev, complete) {
 function processMedium(ev, medium, complete) {
 
   // make sure the image/video is in the event date range
-  var created = moment(medium.created_time * 1000).startOf('day').toDate();
+  var created = moment(medium.data.created_time * 1000).startOf('day').toDate();
   if(ev.start <= created && created <= ev.end) {
 
     // add this image/video to the event
-    ev.media.addToSet(medium.id);
+    ev.media.addToSet(medium.data.id);
 
     // and update the image/video cache
     Medium.update(
-      { id: medium.id },
-      medium,
+      { id: medium.data.id },
+      medium.data,
       { multi: false, upsert: true },
       complete
     );
