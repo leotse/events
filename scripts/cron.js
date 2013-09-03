@@ -72,7 +72,7 @@ function downloadMedia(ev, complete) {
       client.fetch(function(err, media) {
         if(err) return done(err);
         currentMedia = media;
-        results = results.concat(media.data());
+        results = results.concat(media.data);
         done();
       });
     },
@@ -80,7 +80,9 @@ function downloadMedia(ev, complete) {
     // since the instagram response is always in reverse chronological order, i.e. newest comes first
     // if the oldest entry of the current instagram response is newer than the start date of the event
     // then we want to download the next page of data!
-    function() { return client.url && currentMedia.startDate() > ev.start; },
+    function() { 
+      return client.url && currentMedia.startDate() > ev.start; 
+    },
 
     // gets called when there's an error or when download is complete
     function(err) {

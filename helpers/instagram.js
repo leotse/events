@@ -6,6 +6,7 @@
 var insta = {};
 
 // libs
+var _ = require('underscore');
 var util = require('util');
 var request = require('request');
 var config = require('../config');
@@ -23,7 +24,8 @@ insta.TagClient = function(tag) {
   var self = this;
 
   // instagram api url
-  this.url = getUrl(TAG, tag);
+  //this.url = getUrl(TAG, tag);
+  this.url = 'https://api.instagram.com/v1/tags/wedding/media/recent?client_id=de7ec4f7c3094d58868781fa776a7051&max_tag_id=1378210224540';
 
   // fetches the next page of data from instagram api
   this.fetch = function(callback) {
@@ -32,7 +34,7 @@ insta.TagClient = function(tag) {
       if(r.statusCode !== 200) return onAPIError(r.statusCode, body, callback);
 
       // update fetch url to handle paging
-      var media = new InstaMedia(b);
+      var media = new InstaMedia(tag, b);
       self.url = media.nextUrl();
       callback(null, media);
     });
@@ -41,32 +43,46 @@ insta.TagClient = function(tag) {
 }
 
 // wrapper class for the instagram response, mainly to handle pagination
-function InstaMedia(json) {
-  if(!json) throw new Error('api respones json required to instantiate InstaResponse');
-
+function InstaMedia(tag, json) {
+  if(!json) throw new Error('api response json required to instantiate InstaMedia object');
   var self = this;
+
+  // wrap each media object
+  this.data = _.map(json.data, function(datum) { return new InstaMedium(tag, datum); });
 
   // next url getter
   this.nextUrl = function() { return json.pagination.next_url; };
 
   // end date getter
-  this.endDate = function() { 
-    var data = self.data();
-    return new Date(data[0].created_time * 1000); 
-  };
+  this.endDate = function() { return self.data[0].getTagDate(); };
 
   // start date getter
-  this.startDate = function() { 
-    var data = self.data();
-    var lasti = data.length - 1;
-    return new Date(data[lasti].created_time * 1000); 
-  };
-
-  // media getter
-  this.data = function() { return json.data; };
+  this.startDate = function() { return self.data[self.data.length - 1].getTagDate(); };
 
   // returns the raw json response
   this.toJSON = function() { return json; };
+}
+
+function InstaMedium(tag, data) {
+  if(!data) throw new Error('InstaMedia json required to instantiate InstaMedium object');
+  var self = this;
+
+  // gets the tagged date for this medium
+  this.getTagDate = function() {
+    var tagtime = data.caption ? data.caption.created_time : data.created_time;
+    var comments = data.comments.data;
+
+    // iterate the comments and find the latest tag time
+    var comment, i = comments.length - 1, hashtag = '#' + tag.toLowerCase();
+    for(i; i >= 0; i--) {
+      comment = comments[i];
+      if(comment.text.toLowerCase().indexOf(hashtag) >= 0) {
+        tagtime = Math.max(tagtime, comment.created_time);
+        break;
+      }
+    }
+    return new Date(tagtime * 1000);
+  }
 }
 
 
