@@ -13,7 +13,10 @@ var flash = require('connect-flash');
 var ensureAuth = require('connect-ensure-login').ensureLoggedIn;
 var passport = require('passport');
 var local = require('passport-local');
+var instagram = require('passport-instagram');
 var auth = require('./helpers/auth');
+var insta_auth = require('./helpers/insta-auth');
+var urls = require('./helpers/urls');
 var routes = require('./routes');
 var userRoutes = require('./routes/user');
 var eventRoutes = require('./routes/event');
@@ -23,9 +26,15 @@ var config = require('./config');
 var app = express();
 
 // init passport
-passport.use(new local.Strategy(auth.authenticate));
-passport.serializeUser(auth.serializeUser);
-passport.deserializeUser(auth.deserializeUser);
+// passport.use(new local.Strategy(auth.authenticate));
+passport.use(new instagram.Strategy({
+    clientID: config.instagram.key,
+    clientSecret: config.instagram.secret,
+    callbackURL: config.instagram.callback
+  }, insta_auth.authenticate 
+));
+passport.serializeUser(insta_auth.serializeUser);
+passport.deserializeUser(insta_auth.deserializeUser);
 
 // all environments
 app.set('port', process.env.PORT || 3000);
@@ -53,23 +62,31 @@ if ('development' == app.get('env')) {
 }
 
 // general routes
-app.get('/', ensureAuth('/login'), routes.index);
+app.get(urls.HOME, ensureAuth(urls.LOGIN), routes.index);
 
 // event routes
-app.get('/events/add', ensureAuth('/login'), eventRoutes.addView);
-app.get('/events/:_id', ensureAuth('/login'), eventRoutes.get);
-app.get('/events', ensureAuth('/login'), eventRoutes.list);
-app.put('/events', ensureAuth('/login'), eventRoutes.add);
-app.del('/events', ensureAuth('/login'), eventRoutes.del);
+app.get('/events/add', ensureAuth(urls.LOGIN), eventRoutes.addView);
+app.get('/events/:_id', ensureAuth(urls.LOGIN), eventRoutes.get);
+app.get('/events', ensureAuth(urls.LOGIN), eventRoutes.list);
+app.put('/events', ensureAuth(urls.LOGIN), eventRoutes.add);
+app.del('/events', ensureAuth(urls.LOGIN), eventRoutes.del);
 
 // auth routes
-app.get('/register', userRoutes.register);
-app.post('/register', userRoutes.create);
-app.get('/login', userRoutes.login);
-app.post('/login', passport.authenticate('local', { 
-  successReturnToOrRedirect: '/', 
-  failureRedirect: '/login', 
-  failureFlash: true 
+// custom reigster/login not used anymore, migrating to instagram
+// app.get('/register', userRoutes.register);
+// app.post('/register', userRoutes.create);
+// app.get('/login', userRoutes.login);
+// app.post('/login', passport.authenticate('local', { 
+//   successReturnToOrRedirect: '/', 
+//   failureRedirect: '/login', 
+//   failureFlash: true 
+// }));
+app.get(urls.LOGIN, userRoutes.login);
+app.get(urls.LOGOUT, userRoutes.logout);
+app.get(urls.INSTA_AUTH, passport.authenticate('instagram'));
+app.get(urls.INSTA_CALLBACK, passport.authenticate('instagram', { 
+  successReturnToOrRedirect: urls.HOME,
+  failureRedirect: urls.LOGIN 
 }));
 
 // connect to db then start web server

@@ -4,12 +4,21 @@
 var routes = {};
 
 // libs
+var urls = require('../helpers/urls');
 var resh = require('../helpers/res');
 var User = require('../models/user');
 
 // GET /login
 routes.login = function(req, res) {
-  res.render('user/login', { errors: req.flash('error') });
+  // migrating to instagram login
+  // res.render('user/login', { errors: req.flash('error') });
+  res.render('user/sso');
+};
+
+// GET /logout
+routes.logout = function(req, res) {
+  req.logout();
+  res.redirect(urls.HOME);
 };
 
 // GET /register
@@ -41,7 +50,7 @@ routes.create = function(req, res) {
   var user = new User(req.body);
   user.save(function(err, saved) {
     if(err) return onDBError(req, res, err, 'user/register');
-    res.redirect('/');
+    res.redirect(urls.HOME);
   });
 };
 

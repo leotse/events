@@ -32,7 +32,7 @@ if(env === 'production') {
 	config.instagram = {
 		key: 'de7ec4f7c3094d58868781fa776a7051',
 		secret: 'd56cf05ae65e4feab05e08bfacab5194',
-		callback: 'http://localhost:3000/instargram/callback'
+		callback: 'http://localhost:3000/auth/instagram/callback'
 	};
 	
 }

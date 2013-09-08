@@ -18,6 +18,7 @@
     "underscore": "~1.5.1",
     "async": "~0.2.9",
     "request": "~2.27.0",
-    "moment": "~2.1.0"
+    "moment": "~2.1.0",
+    "passport-instagram": "~0.1.2"
   }
 }
