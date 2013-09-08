@@ -10,6 +10,7 @@ var moment = require('moment');
 var mongoose = require('mongoose');
 var config = require('../config');
 var Event = require('../models/event');
+var User = require('../models/passport-user');
 var Medium = require('../models/medium');
 var insta = require('../helpers/instagram');
 var TagClient = insta.TagClient;
@@ -60,7 +61,7 @@ function processEvent(ev, complete) {
 
 // downloads all availabe media for this event
 function downloadMedia(ev, complete) {
-  var client = new TagClient(ev.tag);
+  var client = new TagClient(ev._owner.accessToken, ev.tag);
   var results = [];
   var currentMedia = null;
 

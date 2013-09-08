@@ -12,7 +12,7 @@ var ObjectId = Schema.Types.ObjectId;
 // schema definition
 var schema = new Schema({
 
-  _owner: { type: ObjectId, ref: 'User', required: true },
+  _owner: { type: ObjectId, ref: 'PassportUser', required: true },
   name: { type: String, required: true },
   desc: { type: String, required: true },
   tag: { type: String, required: true },
@@ -35,6 +35,7 @@ schema.statics.getCurrent = function(callback) {
   Event.find()
     .where('start').lte(now)
     .where('end').gte(now)
+    .populate('_owner')
     .sort({ $natural: 1 })
     .exec(callback);
 };

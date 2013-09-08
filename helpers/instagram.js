@@ -20,11 +20,11 @@ var TAG = BASE + '/tags/%s/media/recent';
 // Classes //
 /////////////
 
-insta.TagClient = function(tag) {
+insta.TagClient = function(accessToken, tag) {
   var self = this;
 
   // instagram api url
-  this.url = getUrl(TAG, tag);
+  this.url = getUrl(TAG, tag, accessToken);
 
   // fetches the next page of data from instagram api
   this.fetch = function(callback) {
@@ -33,7 +33,7 @@ insta.TagClient = function(tag) {
       if(r.statusCode !== 200) return onAPIError(r.statusCode, body, callback);
 
       // update fetch url to handle paging
-      var media = new InstaMedia(tag, b);
+      var media = new InstaMedia(accessToken, tag, b);
       self.url = media.nextUrl();
       callback(null, media);
     });
@@ -42,12 +42,12 @@ insta.TagClient = function(tag) {
 }
 
 // wrapper class for the instagram response, mainly to handle pagination
-function InstaMedia(tag, json) {
+function InstaMedia(accessToken, tag, json) {
   if(!json) throw new Error('api response json required to instantiate InstaMedia object');
   var self = this;
 
   // wrap each media object
-  this.data = _.map(json.data, function(datum) { return new InstaMedium(tag, datum); });
+  this.data = _.map(json.data, function(datum) { return new InstaMedium(accessToken, tag, datum); });
 
   // next url getter
   this.nextUrl = function() { return json.pagination.next_url; };
@@ -62,7 +62,7 @@ function InstaMedia(tag, json) {
   this.toJSON = function() { return json; };
 }
 
-function InstaMedium(tag, data) {
+function InstaMedium(accessToken, tag, data) {
   if(!data) throw new Error('InstaMedia json required to instantiate InstaMedium object');
   var self = this;
 
@@ -93,14 +93,16 @@ function InstaMedium(tag, data) {
 /////////////
 
 // to generate the instagram api url
-function getUrl(endpoint, params) {
+function getUrl(endpoint, tag, accessToken) {
 
   // base url
-  var url = util.format(endpoint, params);
+  var url = util.format(endpoint, tag);
 
   // add api key
   url += (url.indexOf('?') < 0 ? '?' : '&');
-  url += 'client_id=' + config.instagram.key;
+  if(accessToken) url += 'access_token=' + accessToken;
+  else url += 'client_id=' + config.instagram.key;
+
   return url;
 }
 
