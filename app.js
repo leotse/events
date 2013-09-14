@@ -67,6 +67,7 @@ app.get(urls.HOME, ensureAuth(urls.LOGIN), routes.index);
 // event routes
 app.get('/events/add', ensureAuth(urls.LOGIN), eventRoutes.addView);
 app.get('/events/:_id', ensureAuth(urls.LOGIN), eventRoutes.get);
+app.get('/events/:_id/download', ensureAuth(urls.LOGIN), eventRoutes.download);
 app.get('/events', ensureAuth(urls.LOGIN), eventRoutes.list);
 app.put('/events', ensureAuth(urls.LOGIN), eventRoutes.add);
 app.del('/events', ensureAuth(urls.LOGIN), eventRoutes.del);

@@ -4,7 +4,13 @@
 var routes = {};
 
 // libs
+var _ = require('underscore');
+var util = require('util');
+var path = require('path');
 var async = require('async');
+var fs = require('node-fs');
+var request = require('request');
+var archiver = require('archiver');
 var resh = require('../helpers/res');
 var Event = require('../models/event');
 var Media = require('../models/medium');
@@ -40,7 +46,7 @@ routes.get = function(req, res) {
       // and get all the media for this event
       Media.find()
         .where('id').in(event.media)
-        .sort('-created_time')
+        .sort({ $natural: -1 })
         .exec(done);
     }]
 
@@ -84,7 +90,6 @@ routes.add = function(req, res) {
 
 // DELETE /events
 routes.del = function(req, res) {
-
   var id = req.body._id;
   async.waterfall([
 
@@ -102,9 +107,104 @@ routes.del = function(req, res) {
   });
 };
 
+// GET /events/:_id/download
+routes.download = function(req, res) {
+  var id = req.params._id;
+
+  async.auto({
+
+    // retrieve the event object
+    ev: function(done) { 
+      Event.findOne()
+        .where('_id', id)
+        .populate('_owner')
+        .exec(done);
+    },
+
+    // retrieve the media for this event
+    media: ['ev', function(done, results) {
+      var ev = results.ev;
+      var ids = ev.media;
+
+      Media.find()
+        .where('id').in(ids)
+        .sort('-created_time')
+        .exec(done);
+    }],
+
+    // // create the local dir to store downloaded pics
+    // localdir: [ 'ev', 'media', function(done, results) {
+    //   var ev = results.ev;
+    //   var user = ev._owner;
+    //   var localdir = path.join(__dirname, util.format('../download/%s/%s', user.id, ev._id));
+
+    //   // create the local download dir
+    //   fs.mkdir(localdir, 0777, true, function(err) { done(err, localdir); });
+    // }],
+
+    // // download pics!
+    // download: [ 'media', 'localdir', function(done, results) {
+    //   var media = results.media;
+    //   var dir = results.localdir;
+    //   var urls = _.map(media, function(m) { return m.images.standard_resolution.url; });
+
+    //   async.map(urls, function(url, urlDone) {
+    //     var file = getLocalFilePath(dir, url);
+    //     var fileStream = fs.createWriteStream(file);
+    //     var httpStream = request(url);
+
+    //     httpStream.on('error', function(err) { console.error(err); urlDone(); });
+    //     httpStream.on('end', function() { urlDone(null, file); });
+    //     httpStream.pipe(fileStream);
+
+    //   }, done);
+    // }],
+
+    // // zip up the pics
+    // zip: [ 'ev', 'download', function(done, results) {
+    //   var files = results.download;
+    //   var ev = results.ev;
+    // }]
+
+  }, function(err, results) {
+    if(err) return resh.send(res, err);
+
+    var ev = results.ev;
+    var media = results.media;
+    var urls = _.map(media, function(m) { return m.images.standard_resolution.url; });
+
+    // let client know a zip file is coming down the stream
+    res.header("Content-type", "application/octet-stream");
+    res.header("Content-Disposition", "attachment; filename=" + ev.name + ".zip");
+    res.header("Content-Transfer-Encoding", "binary");
+
+    // setup the zip stream
+    var archive = archiver('zip');
+    archive.on('error', function(err) { return console.error(err); });
+    archive.pipe(res);
+
+    // send file thru zip stream
+    var i = 0;
+    async.eachSeries(urls, function(url, done) {
+      archive.append(request(url), { name: util.format('%s.jpg', i++) }, done);
+    }, function(err) {
+      if(err) console.error(err);
+      archive.finalize(function(err, written) {
+        if(err) return console.log(err);
+      });
+    });
+  });
+};
+
 /////////////
 // Helpers //
 /////////////
+
+// to get the local path for a picture url
+function getLocalFilePath(localdir, url) {
+  var parts = url.split('/');
+  return path.join(localdir, parts[parts.length - 1]);
+}
 
 // to handle form errors
 function onError(req, res, errors, view) {

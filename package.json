@@ -19,6 +19,8 @@
     "async": "~0.2.9",
     "request": "~2.27.0",
     "moment": "~2.1.0",
-    "passport-instagram": "~0.1.2"
+    "passport-instagram": "~0.1.2",
+    "node-fs": "~0.1.7",
+    "archiver": "~0.4.9"
   }
 }
