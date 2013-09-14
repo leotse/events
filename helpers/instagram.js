@@ -7,6 +7,7 @@ var insta = {};
 
 // libs
 var _ = require('underscore');
+var https = require('https');
 var util = require('util');
 var request = require('request');
 var config = require('../config');
@@ -26,19 +27,23 @@ insta.TagClient = function(accessToken, tag) {
   // instagram api url
   this.url = getUrl(TAG, tag, accessToken);
 
+  // create a new agent for this client
+  var agent = { maxSockets: 1 };
+
   // fetches the next page of data from instagram api
-  this.fetch = function(callback) {
-    request({ url: self.url, json: true }, function(e, r, b) {
+  this.fetch = function(callback) {;
+
+    // make the http request!
+    request({ url: self.url, pool: agent, strictSSL: true, json: true }, function(e, r, b) {
       if(e) return onError(e, callback);
       if(r.statusCode !== 200) return onAPIError(r.statusCode, body, callback);
 
       // update fetch url to handle paging
       var media = new InstaMedia(accessToken, tag, b);
       self.url = media.nextUrl();
-      callback(null, media);
+      setImmediate(function() { callback(null, media); });
     });
   }
-
 }
 
 // wrapper class for the instagram response, mainly to handle pagination
@@ -113,7 +118,7 @@ function onError(err, callback) {
   var error = new Error;
   error.code = 500;
   error.message = 'request error';
-  callback(error);
+  setImmediate(function() { callback(error); });
 }
 
 // helper to handle api error
@@ -123,7 +128,7 @@ function onAPIError(code, body, callback) {
   var error = new Error;
   error.code = code
   error.message = 'api error';
-  callback(error);
+  setImmediate(function() { callback(error); });
 }
 
 module.exports = insta;
