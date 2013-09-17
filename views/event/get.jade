@@ -2,20 +2,50 @@ extends ../layout
 
 block content
 
-  //- title
-  h1 events
+  //- content header
+  div.content_header
+
+    //- title
+    h1.title=event.name     
+
+    //- action menu
+    div.action_menu
+      ul
+        li 
+          a(href="#download") Download
+        li 
+          a(href="#slideshow") Slideshow
 
   //- event details
   div.event
-    span.title= event.name
+    //-span.title= 
     span.desc= event.desc
-    span.dates #{event.start} - #{event.end}
-    span.tag &#35;#{event.tag}
+    span.dates #{event.start.getFullYear()}.#{event.start.getMonth()}.#{event.start.getDate()} ~ #{event.end.getFullYear()}.#{event.end.getMonth()}.#{event.end.getDate()}
+    span.tag &#35;#{event.tag}    
 
   //- event media
   div.media
     if media.length > 0
       each medium in media
-        img(src="#{medium.images.thumbnail.url}")
+        img(src="#{medium.images.thumbnail.url}", rel="#{medium.images.standard_resolution.url}")
     else
       div no images at this time
+
+block scripts
+  //- layout
+  script.
+    /*var eventId = event._id;
+
+    (function poll() {
+      setTimeout(function () {
+        $.ajax({
+          type: 'GET',
+          dataType: 'json',
+          url: '/api/events/{:event_id}/media?from={last_id}',
+          success: function (data) {
+            MyNamespace.myFunction(data); //DO ANY PROCESS HERE
+          },
+          complete: poll
+        });
+      }, 5000);
+    })();*/
