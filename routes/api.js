@@ -27,7 +27,12 @@ api.listEvents = function(req, res) {
       if(!daevent) return done(new Error('event not found'));
       
       var media = daevent.media;
-      var sorted = _.sortBy(media, function(m) { return m; });
+      var sorted = _.sortBy(media, function(m) { 
+        var parts = m.split('_');
+        var num = Number(parts[0]);
+        return num;
+      });
+
       var fromIndex = Math.max(-1, sorted.indexOf(from)) + 1;
       var toIndex = Math.min(sorted.length, fromIndex + 20);
       var ids = sorted.slice(fromIndex, toIndex);
@@ -39,7 +44,20 @@ api.listEvents = function(req, res) {
     }
 
   ], function(err, results) {
-    resh.send(res, err, results);
+      if(err) return resh.send(res, err);
+
+      // sort and return results
+      var sorted = _.sortBy(results, function(r) { 
+        var parts = r.id.split('_');
+        var num = Number(parts[0]);
+        return num;
+      });
+
+      _.each(sorted, function(r) {
+        console.log('%s - %s', r.created_time, r.id);
+      });
+
+      resh.send(res, err, sorted);
   });
 };
 
