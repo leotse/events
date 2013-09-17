@@ -20,6 +20,7 @@ var urls = require('./helpers/urls');
 var routes = require('./routes');
 var userRoutes = require('./routes/user');
 var eventRoutes = require('./routes/event');
+var apiRoutes = require('./routes/api');
 var config = require('./config');
 
 // init express app
@@ -71,6 +72,9 @@ app.get('/events/:_id/download', ensureAuth(urls.LOGIN), eventRoutes.download);
 app.get('/events', ensureAuth(urls.LOGIN), eventRoutes.list);
 app.put('/events', ensureAuth(urls.LOGIN), eventRoutes.add);
 app.del('/events', ensureAuth(urls.LOGIN), eventRoutes.del);
+
+// api routes
+app.get('/api/events/:_id/media', ensureAuth(urls.LOGIN), apiRoutes.listEvents);
 
 // auth routes
 // custom reigster/login not used anymore, migrating to instagram
