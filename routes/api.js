@@ -52,11 +52,6 @@ api.listEvents = function(req, res) {
         var num = Number(parts[0]);
         return num;
       });
-
-      _.each(sorted, function(r) {
-        console.log('%s - %s', r.created_time, r.id);
-      });
-
       resh.send(res, err, sorted);
   });
 };
