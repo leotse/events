@@ -10,15 +10,15 @@ var env = process.env.NODE_ENV || 'development';
 if(env === 'production') {
 
 	// prod environment
-	config.db = null;
+	config.db = process.env.MONGOHQ_URL;
 	config.session = {
-		secret: null,
-		db: null
+		secret: 'fc0b736fc87b432bb928c08db18aaa01',
+		db: process.env.MONGOHQ_URL
 	};
 	config.instagram = {
-		key: null,
-		secret: null,
-		callback: null
+		key: 'ea0ac3c3467542c18deafdf2d7e38669',
+		secret: 'cda054b8dc784d2091f18c7e03d9c199',
+		callback: 'http://www.capsulati.com/auth/instagram/callback'
 	};
 
 } else { 
@@ -34,7 +34,6 @@ if(env === 'production') {
 		secret: 'd56cf05ae65e4feab05e08bfacab5194',
 		callback: 'http://localhost:3000/auth/instagram/callback'
 	};
-	
 }
 
 // export
