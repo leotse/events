@@ -15,8 +15,10 @@ helpers.error = function(res, err) {
   // log the error
   console.error(err);
 
-  // not really sure what this error is...
-  res.send(500, { code: 500, msg: 'unknown error' });
+  // send error to client
+  var code = err.code || 500;
+  var msg = err.message || 'unknown error';
+  res.send(code, { code: code, msg: msg });
 };
 
 // export

@@ -11,6 +11,7 @@ var async = require('async');
 var request = require('request');
 var archiver = require('archiver');
 var resh = require('../helpers/res');
+var misc = require('../helpers/misc');
 var Event = require('../models/event');
 var Media = require('../models/medium');
 
@@ -30,6 +31,15 @@ routes.list = function(req, res) {
 
 // GET /events/:_id
 routes.get = function(req, res) {
+
+  // make sure id is valid
+  var _id = req.params._id;
+  if(!misc.isObjectId(_id)) { 
+    var error = new Error('invalid event id');
+    error.code = 400;
+    return resh.send(res, error);
+  }
+
   async.auto({
 
     // first get the event object
@@ -40,7 +50,11 @@ routes.get = function(req, res) {
       var event = results.event;
 
       // make sure event is found
-      if(!event) return done(new Error('event not found'));
+      if(!event) {
+        var error = new Error('event not found');
+        error.code = 404;
+        return done(error);
+      }
 
       // and get all the media for this event
       Media.find()

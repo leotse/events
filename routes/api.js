@@ -9,6 +9,7 @@ var api = {};
 var _ = require('underscore');
 var async = require('async');
 var resh = require('../helpers/res');
+var misc = require('../helpers/misc');
 var Event = require('../models/event');
 var Media = require('../models/medium');
 
@@ -17,6 +18,13 @@ api.listEvents = function(req, res) {
   var _id = req.params._id;
   var from = req.query.from;
 
+  // make sure id is valid
+  if(!misc.isObjectId(_id)) { 
+    var error = new Error('invalid event id');
+    error.code = 400;
+    return resh.send(res, error);
+  }
+
   async.waterfall([
 
     // get the event!
@@ -24,7 +32,11 @@ api.listEvents = function(req, res) {
 
     // page the media!
     function(daevent, done) {
-      if(!daevent) return done(new Error('event not found'));
+      if(!daevent) {
+        var error = new Error('event not found');
+        error.code = 404;
+        return done(error);
+      }
       
       var media = daevent.media;
       var sorted = _.sortBy(media, function(m) { 
