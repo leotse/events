@@ -25,27 +25,39 @@ block content
 
   //- event media
   div.media
-    if media.length > 0
-      each medium in media
-        img(src="#{medium.images.thumbnail.url}", rel="#{medium.images.standard_resolution.url}")
-    else
-      div no images at this time
+    //- if media.length > 0
+    //-   each medium in media
+    //-     img(src="#{medium.images.thumbnail.url}", rel="#{medium.images.standard_resolution.url}")
+    //- else
+    //-   div no images at this time
 
 block scripts
   //- layout
   script.
-    /*var eventId = event._id;
+    var eventId = "#{event._id}";
+    var lastId = "";
+
+    function refresh(data) {
+      var length = data.length;
+      for (var i = 0; i < length; i++) {
+        $(".media").prepend("<img src='" + data[i].images.thumbnail.url + "' rel='" + data[i].images.standard_resolution.url + "'/>");
+      }
+      // update last id
+      lastId = data[length - 1].id;      
+    }
 
     (function poll() {
       setTimeout(function () {
         $.ajax({
           type: 'GET',
           dataType: 'json',
-          url: '/api/events/{:event_id}/media?from={last_id}',
+          url: '/api/events/' + eventId + '/media?from=' + lastId,
           success: function (data) {
-            MyNamespace.myFunction(data); //DO ANY PROCESS HERE
+            console.log(data);
+            // if there's data, refresh grid
+            if(data.length > 0) refresh(data);
           },
           complete: poll
         });
       }, 5000);
-    })();*/
+    })();
