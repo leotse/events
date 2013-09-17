@@ -8,7 +8,6 @@ var _ = require('underscore');
 var util = require('util');
 var path = require('path');
 var async = require('async');
-var fs = require('node-fs');
 var request = require('request');
 var archiver = require('archiver');
 var resh = require('../helpers/res');
