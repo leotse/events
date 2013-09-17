@@ -1,0 +1,1 @@
+node ..\node_modules\less\bin\lessc ..\public\stylesheets\style.less ..\public\stylesheets\style.css

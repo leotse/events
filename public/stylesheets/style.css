@@ -1,30 +1,354 @@
+/*---------------------------------------------------
+    LESS Elements 0.9
+  ---------------------------------------------------
+    A set of useful LESS mixins
+    More info at: http://lesselements.com
+  ---------------------------------------------------*/
+/**
+ * html5doctor.com Reset Stylesheet v1.6.1 (http://html5doctor.com/html-5-reset-stylesheet/)
+ * Richard Clark (http://richclarkdesign.com)
+ * http://cssreset.com
+ */
+html,
+body,
+div,
+span,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+abbr,
+address,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+samp,
+small,
+strong,
+sub,
+sup,
+var,
+b,
+i,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section,
+summary,
+time,
+mark,
+audio,
+video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  font-size: 100%;
+  vertical-align: baseline;
+  background: transparent;
+}
+body {
+  line-height: 1;
+}
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+  display: block;
+}
+nav ul {
+  list-style: none;
+}
+blockquote,
+q {
+  quotes: none;
+}
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+  content: '';
+  content: none;
+}
+a {
+  margin: 0;
+  padding: 0;
+  font-size: 100%;
+  vertical-align: baseline;
+  background: transparent;
+}
+/* change colours to suit your needs */
+ins {
+  background-color: #ff9;
+  color: #000;
+  text-decoration: none;
+}
+/* change colours to suit your needs */
+mark {
+  background-color: #ff9;
+  color: #000;
+  font-style: italic;
+  font-weight: bold;
+}
+del {
+  text-decoration: line-through;
+}
+abbr[title],
+dfn[title] {
+  border-bottom: 1px dotted;
+  cursor: help;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+/* change border colour to suit your needs */
+hr {
+  display: block;
+  height: 1px;
+  border: 0;
+  border-top: 1px solid #cccccc;
+  margin: 1em 0;
+  padding: 0;
+}
+input,
+select {
+  vertical-align: middle;
+}
+/****************************
+Custom style starts here
+*****************************/
 /* General */
-body { padding:50px; font:14px "Lucida Grande", Helvetica, Arial, sans-serif;}
-a { color:#00B7FF; }
-
+/*body { padding:50px; font:14px "Lucida Grande", Helvetica, Arial, sans-serif;}*/
+* {
+  font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif;
+}
+.fixed {
+  position: fixed;
+}
+header {
+  padding: 20px;
+  background: #fff;
+  width: 100%;
+  -webkit-box-shadow: 5px 0px 2px rgba(0, 0, 0, 0.25);
+  -moz-box-shadow: 5px 0px 2px rgba(0, 0, 0, 0.25);
+  box-shadow: 5px 0px 2px rgba(0, 0, 0, 0.25);
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: 'Poiret One', cursive;
+  font-weight: normal;
+}
+h1 {
+  font-size: 52px;
+}
+h2 {
+  font-size: 48px;
+}
+h3 {
+  font-size: 32px;
+}
+h4 {
+  font-size: 28px;
+}
+h5 {
+  font-size: 18px;
+}
+h6 {
+  font-size: 16px;
+}
+header h1.logo {
+  font-family: 'Poiret One', cursive;
+  font-size: 24px;
+}
+h1.title {
+  float: left;
+  margin: 12px 0;
+}
+#main_content {
+  margin: 0 auto;
+  width: 95%;
+}
+a {
+  color: #00B7FF;
+  text-decoration: none;
+}
+a:hover {
+  color: #0077ff;
+  text-decoration: underline;
+}
+a:active {
+  text-decoration: none;
+}
+/* Menus */
+.action_menu {
+  float: right;
+  margin-left: 50px;
+  margin-right: 20px;
+  height: 100%;
+  vertical-align: middle;
+  padding: 32px 0;
+}
+.action_menu > ul > li {
+  list-style: none;
+  display: inline;
+  padding: 0 30px;
+  border-left: dashed 1px #888;
+}
+.action_menu > ul > li:last-child {
+  border-right: dashed 1px #888;
+}
 /* Register Form */
-form.register ul { margin:0; padding:0; list-style:none; }
-
+form.register ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
 /* Register Form Error */
-.error { color:red; }
-.error p { margin:0; padding:0; }
-.error ul { margin:0 0 15px 0; }
-
+.error {
+  color: red;
+}
+.error p {
+  margin: 0;
+  padding: 0;
+}
+.error ul {
+  margin: 0 0 15px 0;
+}
 /* Login Form */
-form.login ul { margin:0; padding:0; list-style:none; }
-
+form.login ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
 /* Event Form */
-form.event ul { margin:0; padding:0; list-style:none; }
-
+form.event ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
 /* Events List */
-.events { margin:0; padding:0; list-style:none; }
-.event { margin:0 0 10px 0; padding:10px; background-color:#f0f0f0; }
-.event a:link { text-decoration:none; }
-.event span { display:block; margin:0 0 2px 0; }
-.event span.title { font-weight:900; }
-.event span.desc { font-weight:100; }
-.event span.tags { font-style:oblique; }
-
+.content_header.fixed {
+  /*top: 65px;*/
+  top: 0;
+  width: 95%;
+  background: #fff;
+  -webkit-box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.25);
+  -moz-box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.25);
+  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.25);
+}
+.content_header.fixed h1.title {
+  margin-left: 36px;
+}
+.events {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.event {
+  margin: 0 0 10px 0;
+  clear: both;
+  text-shadow: -1px -1px rgba(255, 255, 255, 0.1);
+}
+.event a:link {
+  text-decoration: none;
+}
+.event span {
+  display: block;
+  margin: 12px 0;
+}
+.event span.title {
+  font-weight: 900;
+}
+.event span.desc {
+  font-weight: 100;
+}
+.event span.tag {
+  font-style: oblique;
+  font-size: 20px;
+}
 /* Media List */
-.media { margin:0; padding:0; list-style:none; }
-.media img { margin:0; padding:0; float:left; }
+.media {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.media img {
+  margin: 2px;
+  padding: 0;
+  float: left;
+  -webkit-transition: all 0.2s ease-out;
+  -moz-transition: all 0.2s ease-out;
+  -o-transition: all 0.2s ease-out;
+  transition: all 0.2s ease-out;
+  width: 150px;
+  height: 150px;
+}
+.media img:hover {
+  cursor: pointer;
+  background-color: #0073B2;
+  -webkit-box-shadow: 1px 1px 20px rgba(0, 0, 0, 0.8);
+  -moz-box-shadow: 1px 1px 20px rgba(0, 0, 0, 0.8);
+  box-shadow: 1px 1px 20px rgba(0, 0, 0, 0.8);
+  -webkit-transition: all 0.2s ease-in;
+  -moz-transition: all 0.2s ease-in;
+  -o-transition: all 0.2s ease-in;
+  transition: all 0.2s ease-in;
+  margin-top: -2px;
+  margin-left: -2px;
+  margin-right: 6px;
+  margin-bottom: 6px;
+  /*  width: 160px;
+  height: 160px;*/
+
+}
