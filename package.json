@@ -20,6 +20,7 @@
     "request": "~2.27.0",
     "moment": "~2.1.0",
     "passport-instagram": "~0.1.2",
-    "archiver": "~0.4.9"
+    "archiver": "~0.4.9",
+    "nodetime": "~0.8.13"
   }
 }

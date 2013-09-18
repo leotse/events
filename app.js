@@ -2,6 +2,14 @@
 // Main //
 //////////
 
+// monitoring for prod
+if(process.env.NODE_ENV === 'production'); {
+  require('nodetime').profile({
+    accountKey: process.env.NODETIME_ACCOUNT_KEY, 
+    appName: 'capsulati'
+  });
+}
+
 // libs
 var http = require('http');
 var path = require('path');
