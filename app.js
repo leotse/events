@@ -85,15 +85,6 @@ app.del('/events', ensureAuth(urls.LOGIN), eventRoutes.del);
 app.get('/api/events/:_id/media', ensureAuth(urls.LOGIN), apiRoutes.listEvents);
 
 // auth routes
-// custom reigster/login not used anymore, migrating to instagram
-// app.get('/register', userRoutes.register);
-// app.post('/register', userRoutes.create);
-// app.get('/login', userRoutes.login);
-// app.post('/login', passport.authenticate('local', { 
-//   successReturnToOrRedirect: '/', 
-//   failureRedirect: '/login', 
-//   failureFlash: true 
-// }));
 app.get(urls.LOGIN, userRoutes.login);
 app.get(urls.LOGOUT, userRoutes.logout);
 app.get(urls.INSTA_AUTH, passport.authenticate('instagram'));

@@ -20,6 +20,7 @@ block content
           span.dates #{event.start} - #{event.end}
           span.tag &#35;#{event.tag}
           a.download(href="/events/#{event._id}/download") download
+          a.share(href="/events/#{event._id}/share") share
           form(method="POST", action="/events")
             input(type="hidden", name="_method", value="delete")
             input(type="hidden", name="_id", value="#{event._id}")

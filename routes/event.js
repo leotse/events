@@ -145,40 +145,6 @@ routes.download = function(req, res) {
         .exec(done);
     }],
 
-    // // create the local dir to store downloaded pics
-    // localdir: [ 'ev', 'media', function(done, results) {
-    //   var ev = results.ev;
-    //   var user = ev._owner;
-    //   var localdir = path.join(__dirname, util.format('../download/%s/%s', user.id, ev._id));
-
-    //   // create the local download dir
-    //   fs.mkdir(localdir, 0777, true, function(err) { done(err, localdir); });
-    // }],
-
-    // // download pics!
-    // download: [ 'media', 'localdir', function(done, results) {
-    //   var media = results.media;
-    //   var dir = results.localdir;
-    //   var urls = _.map(media, function(m) { return m.images.standard_resolution.url; });
-
-    //   async.map(urls, function(url, urlDone) {
-    //     var file = getLocalFilePath(dir, url);
-    //     var fileStream = fs.createWriteStream(file);
-    //     var httpStream = request(url);
-
-    //     httpStream.on('error', function(err) { console.error(err); urlDone(); });
-    //     httpStream.on('end', function() { urlDone(null, file); });
-    //     httpStream.pipe(fileStream);
-
-    //   }, done);
-    // }],
-
-    // // zip up the pics
-    // zip: [ 'ev', 'download', function(done, results) {
-    //   var files = results.download;
-    //   var ev = results.ev;
-    // }]
-
   }, function(err, results) {
     if(err) return resh.send(res, err);
 
