@@ -2,6 +2,10 @@ extends ../layout
 
 block content
 
+  //- bg img
+  img(class="background_img", src="/images/background1.jpg")
+
+
   //- content header
   div.content_header
 
@@ -12,7 +16,7 @@ block content
     div.action_menu
       ul
         li 
-          a(href="#download") Download
+          a(href="#{event._id}/download") Download
         li 
           a(href="#slideshow") Slideshow
 
@@ -36,28 +40,52 @@ block scripts
   script.
     var eventId = "#{event._id}";
     var lastId = "";
+    var cachedList = [];
+    var set = false;
 
     function refresh(data) {
-      var length = data.length;
-      for (var i = 0; i < length; i++) {
-        $(".media").prepend("<img src='" + data[i].images.thumbnail.url + "' rel='" + data[i].images.standard_resolution.url + "'/>");
-      }
+      var $medialist = $(".media");
+
+      cachedList = $.extend(cachedList, data);
+      var length = data.length; 
+
+      // renders on UI if nothing on screen
+     /* if($medialist.children().length < 1) 
+      {*/
+
+        for (var i = 0; i < length; i++) {
+          $(".media").prepend("<img class='fade" + (i % 3) + "' src='" + data[i].images.thumbnail.url + "' rel='" + data[i].images.standard_resolution.url + "'/>");        
+        }        
+      //}
+
       // update last id
-      lastId = data[length - 1].id;      
+      lastId = cachedList[length - 1].id;
+      /*if(!set) {
+        $(".background_img").attr("src", data[length-1].images.standard_resolution.url);      
+        set=true;
+      }*/
     }
 
-    (function poll() {
+    function poll() {
+      $.ajax({
+        type: 'GET',
+        dataType: 'json',
+        url: '/api/events/' + eventId + '/media?from=' + lastId,
+        success: function (data) {
+          console.log(data);
+          // if there's data, refresh grid
+          if(data.length > 0) refresh(data);
+        },
+        complete: pollAgain
+      });
+    }
+
+    function pollAgain() {
       setTimeout(function () {
-        $.ajax({
-          type: 'GET',
-          dataType: 'json',
-          url: '/api/events/' + eventId + '/media?from=' + lastId,
-          success: function (data) {
-            console.log(data);
-            // if there's data, refresh grid
-            if(data.length > 0) refresh(data);
-          },
-          complete: poll
-        });
-      }, 5000);
-    })();
+        poll();
+      }, 1000);
+    };
+
+    $(document).ready(function() {
+      poll();
+    });
