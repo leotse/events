@@ -14,6 +14,7 @@ var resh = require('../helpers/res');
 var misc = require('../helpers/misc');
 var Event = require('../models/event');
 var Media = require('../models/medium');
+var Alias = require('../models/alias');
 
 // GET /events
 routes.list = function(req, res) {
@@ -175,9 +176,37 @@ routes.download = function(req, res) {
   });
 };
 
+// GET /events/:_id/share
+routes.share = function(req, res) {
+  var eventId = req.params._id;
+
+  // validate event id
+  if(!misc.isObjectId(eventId)) return resh.send(res, createError(400, 'invalid event id'));
+
+  // check if the event already has an alias
+  // if it doesn't go to the create alias page
+  // otherwise go to the edit alias page
+  Alias.findOne()
+    .where('_event', eventId)
+    .exec(function(err, alias) {
+      if(err) return resh.send(res, err);
+
+      if(!alias) return res.redirect('/events/' + eventId + '/alias');
+      else return res.redirect('/events/' + eventId + '/alias/' + alias._id);
+    })
+};
+
 /////////////
 // Helpers //
 /////////////
+
+// helper to create an error object
+function createError(code, msg) {
+  var error = new Error;
+  error.code = code;
+  error.message = msg;
+  return error;
+}
 
 // to get the local path for a picture url
 function getLocalFilePath(localdir, url) {

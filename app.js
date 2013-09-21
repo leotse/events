@@ -28,6 +28,8 @@ var urls = require('./helpers/urls');
 var routes = require('./routes');
 var userRoutes = require('./routes/user');
 var eventRoutes = require('./routes/event');
+var aliasRoutes = require('./routes/alias');
+var albumRoutes = require('./routes/album');
 var apiRoutes = require('./routes/api');
 var config = require('./config');
 
@@ -77,9 +79,19 @@ app.get(urls.HOME, ensureAuth(urls.LOGIN), routes.index);
 app.get('/events/add', ensureAuth(urls.LOGIN), eventRoutes.addView);
 app.get('/events/:_id', ensureAuth(urls.LOGIN), eventRoutes.get);
 app.get('/events/:_id/download', ensureAuth(urls.LOGIN), eventRoutes.download);
+app.get('/events/:_id/share', ensureAuth(urls.LOGIN), eventRoutes.share);
 app.get('/events', ensureAuth(urls.LOGIN), eventRoutes.list);
 app.put('/events', ensureAuth(urls.LOGIN), eventRoutes.add);
 app.del('/events', ensureAuth(urls.LOGIN), eventRoutes.del);
+
+// alias routes
+app.get('/events/:eid/alias/:aid', ensureAuth(urls.LOGIN), aliasRoutes.editView);
+app.post('/events/:eid/alias/:aid', ensureAuth(urls.LOGIN), aliasRoutes.edit);
+app.get('/events/:_id/alias', ensureAuth(urls.LOGIN), aliasRoutes.addView);
+app.put('/events/:_id/alias', ensureAuth(urls.LOGIN), aliasRoutes.add);
+
+// public album routes
+app.get('/albums/:alias', albumRoutes.show);
 
 // api routes
 app.get('/api/events/:_id/media', ensureAuth(urls.LOGIN), apiRoutes.listEvents);

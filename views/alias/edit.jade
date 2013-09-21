@@ -1,0 +1,21 @@
+extends ../layout
+
+block content
+
+  //- title
+  h1 edit share
+
+  //- errors if any
+  if errors
+    div.error
+      p There are some problems with the following fields =)
+      ul
+        each error in errors
+          li= error.msg
+
+  //- create event form
+  form(method="POST", action="/events/#{event._id}/alias/#{alias._id}")
+    span alias:
+    input(type="text", name="alias", value="#{alias.alias}")
+
+    input(type="submit", value="share")
