@@ -26,6 +26,7 @@ var schema = new Schema({
 
 // indexes definition
 schema.index({ id: 1, created_time: -1 }, { unique: true });
+schema.index({ created_time: -1 });
 
 // export
 module.exports = mongoose.model('Medium', schema);

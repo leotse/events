@@ -4,52 +4,12 @@ html
 		title ievents
 
 		//- import JS libraries
-		script(type='text/javascript', src='/javascripts/libs/jquery-1.10.2.min.js');
-		script(type='text/javascript', src='/javascripts/libs/masonry.pkgd.min.js');
-		script(type='text/javascript', src='/javascripts/libs/blur.js');
+		script(type='text/javascript', src='/javascripts/libs/jquery-1.10.2.min.js')
+		script(type='text/javascript', src='/javascripts/libs/masonry.pkgd.min.js')
+		script(type='text/javascript', src='/javascripts/libs/blur.js')
 
+		//- more scripts in children pages
 		block scripts
-
-		script.
-			function getScroll () {
-				var b = document.body;
-				var e = document.documentElement;
-				return {
-					left: parseFloat( window.pageXOffset || b.scrollLeft || e.scrollLeft ),
-					top: parseFloat( window.pageYOffset || b.scrollTop || e.scrollTop )
-				};
-			}
-
-			$(document).ready(function() {
-				var myHeader = $('header');
-				var myContentHeader = $('.content_header');
-
-				myHeader.data( 'position', myHeader.position() );
-				myContentHeader.data( 'position', myContentHeader.position() );
-
-				$(window).scroll(function(){
-					/*var hPos = myHeader.data('position'), scroll = getScroll();
-					if ( hPos.top < scroll.top ) {
-						myHeader.addClass('fixed');
-					}
-					else {
-						myHeader.removeClass('fixed');
-					}*/
-
-					hPos = myContentHeader.data('position'), scroll = getScroll();
-					if ( hPos.top < scroll.top ) {
-						myContentHeader.addClass('fixed');
-					}
-					else {
-						myContentHeader.removeClass('fixed');
-						myContentHeader.blurjs({
-							source: '#main_content',
-							radius: 10,
-							overlay: 'rgba(255,255,255,0.4)'
-						});
-					}
-				});
-			});
 		
 		//- import CSS
 		link(rel='stylesheet', href='/stylesheets/style.css')

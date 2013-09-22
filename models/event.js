@@ -20,7 +20,8 @@ var schema = new Schema({
   end: { type: Date, required: true },
   enabled: { type: Boolean, default: true },
   created: { type: Date, default: Date.now },
-  media: [{ type: String }]
+  media: [{ type: String }],
+  removed: [{ type: String }]
 
 }, { strict: true });
 

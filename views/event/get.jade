@@ -89,3 +89,43 @@ block scripts
     $(document).ready(function() {
       poll();
     });
+
+    function getScroll () {
+      var b = document.body;
+      var e = document.documentElement;
+      return {
+        left: parseFloat( window.pageXOffset || b.scrollLeft || e.scrollLeft ),
+        top: parseFloat( window.pageYOffset || b.scrollTop || e.scrollTop )
+      };
+    }
+
+    $(document).ready(function() {
+      var myHeader = $('header');
+      var myContentHeader = $('.content_header');
+
+      myHeader.data( 'position', myHeader.position() );
+      myContentHeader.data( 'position', myContentHeader.position() );
+
+      $(window).scroll(function(){
+        /*var hPos = myHeader.data('position'), scroll = getScroll();
+        if ( hPos.top < scroll.top ) {
+          myHeader.addClass('fixed');
+        }
+        else {
+          myHeader.removeClass('fixed');
+        }*/
+
+        hPos = myContentHeader.data('position'), scroll = getScroll();
+        if ( hPos.top < scroll.top ) {
+          myContentHeader.addClass('fixed');
+        }
+        else {
+          myContentHeader.removeClass('fixed');
+          myContentHeader.blurjs({
+            source: '#main_content',
+            radius: 10,
+            overlay: 'rgba(255,255,255,0.4)'
+          });
+        }
+      });
+    });

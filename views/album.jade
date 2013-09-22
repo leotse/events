@@ -1,0 +1,15 @@
+extends layout
+
+block scripts
+  script(type='text/javascript', src='/javascripts/album.js')
+
+block content
+  h1 album - #{event.name}
+  h4= event.desc
+  form.media(method="post", action="")
+    input(type="hidden", name="_method", value="delete")
+    input(type="hidden", name="items")
+    div
+      input(type="submit" value="remove")
+    each m in media
+      img(src="#{m.images.standard_resolution.url}" id="#{m.id}")
