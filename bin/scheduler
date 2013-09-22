@@ -85,12 +85,15 @@ function processEvent(ev, processEventComplete) {
 // process a single medium (image or video)
 function processMedium(ev, medium, complete) {
 
-  // add this image/video to the event
-  ev.media.addToSet(medium.data.id);
+  // add this image/video to the event if it was not removed from the event
+  var id = medium.data.id;
+  if(ev.removed.indexOf(id) < 0) {
+    ev.media.addToSet(id);
+  }
 
   // update the image/video cache
   Medium.update(
-    { id: medium.data.id },
+    { id: id },
     medium.data,
     { multi: false, upsert: true },
     complete
