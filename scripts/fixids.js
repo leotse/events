@@ -4,9 +4,6 @@
 
 // script to fix the media id of all media in the db
 
-// POTENTIALLY DESTRUCTIVE - POINTS SCRIPT TO PROD DB!
-// process.env.NODE_ENV = 'production';
-
 //libs
 var mongoose = require('mongoose');
 var config = require('../config');
@@ -20,12 +17,14 @@ mongoose.connect(config.db, start);
 function start(err) {
 	if(err) throw err;
 
+	var saving = 0;
 	var stream = Media.find().stream();
 	stream.on('data', function(m) {
 
 		// skip if already fixed
 		if(m.mediaId && m.machineId) return;
 
+		saving++;
 		var id = m.id;
 		var parts = id.split('_');
 		var mediaId = misc.normalizeId(parts[0]);
@@ -42,14 +41,22 @@ function start(err) {
 
 	}).on('close', function() {
 
-		console.log('Fixed all ids!');
-		process.exit(0);
+		if(saving === 0) onComplete();
 
 	});
 
 	// common event handlers
 	function onSaveComplete(err, saved) {
+		saving--;
+
 		if(err) console.error(err);
 		console.log('saved %s', saved.id);
+
+		if(saving === 0) onComplete();
+	}
+
+	function onComplete() {
+		console.log('Fixed all ids!');
+		process.exit(0);
 	}
 }
