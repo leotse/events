@@ -35,7 +35,7 @@ api.listEvents = function(req, res) {
       // build the query
       var query = Media.find()
         .where('id').in(daevent.media)
-        .sort('-mediaId')
+        .sort('-id')
         .limit(20);
 
       // add paging conditions

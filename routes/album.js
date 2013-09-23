@@ -37,7 +37,7 @@ routes.show = function(req, res) {
       var media = ev.media;
       Media.find()
         .where('id').in(media)
-        .sort('-mediaId')
+        .sort('-id')
         .limit(20)
         .exec(done);
     }]

@@ -51,16 +51,13 @@ routes.get = function(req, res) {
       var event = results.event;
 
       // make sure event is found
-      if(!event) {
-        var error = new Error('event not found');
-        error.code = 404;
-        return done(error);
-      }
+      if(!event) return done(createError(404, 'event not found'));
 
       // and get all the media for this event
       Media.find()
         .where('id').in(event.media)
         .sort('-id')
+        .limit(20)
         .exec(done);
     }]
 
@@ -70,7 +67,7 @@ routes.get = function(req, res) {
     // finally render the page!
     var event = results.event;
     var media = results.media;
-    res.render('event/get', { event: event, media: media });
+    res.render('event/get2', { event: event, media: media });
   });
 }
 
