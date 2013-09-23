@@ -60,7 +60,7 @@ routes.get = function(req, res) {
       // and get all the media for this event
       Media.find()
         .where('id').in(event.media)
-        .sort({ $natural: -1 })
+        .sort('-id')
         .exec(done);
     }]
 

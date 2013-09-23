@@ -19,11 +19,7 @@ api.listEvents = function(req, res) {
   var from = req.query.from;
 
   // make sure id is valid
-  if(!misc.isObjectId(_id)) { 
-    var error = new Error('invalid event id');
-    error.code = 400;
-    return resh.send(res, error);
-  }
+  if(!misc.isObjectId(_id)) return resh.send(res, createError(400, 'invalid event id'));
 
   async.waterfall([
 
@@ -32,41 +28,47 @@ api.listEvents = function(req, res) {
 
     // page the media!
     function(daevent, done) {
-      if(!daevent) {
-        var error = new Error('event not found');
-        error.code = 404;
-        return done(error);
+      if(!daevent) return done(createError(404, 'event not found'));
+
+      // parse the media id
+      var parts = from.split('_');
+      var fromMediaId = misc.normalizeId(parts[0]);
+
+      // build the query
+      var query = Media.find()
+        .where('id').in(daevent.media)
+        .sort('-mediaId')
+        .limit(20);
+
+      // add from condition if it's specified
+      if(from) {
+        query.where('mediaId').lt(fromMediaId)
       }
-      
-      var media = daevent.media;
-      var sorted = _.sortBy(media, function(m) { 
-        var parts = m.split('_');
-        var num = Number(parts[0]);
-        return num;
-      });
 
-      var fromIndex = Math.max(-1, sorted.indexOf(from)) + 1;
-      var toIndex = Math.min(sorted.length, fromIndex + 20);
-      var ids = sorted.slice(fromIndex, toIndex);
-
-      // get these media from db!
-      Media.find()
-        .where('id').in(ids)
-        .exec(done);
+      // and execute query!
+      query.exec(done);
     }
 
   ], function(err, results) {
       if(err) return resh.send(res, err);
-
-      // sort and return results
-      var sorted = _.sortBy(results, function(r) { 
-        var parts = r.id.split('_');
-        var num = Number(parts[0]);
-        return num;
-      });
-      resh.send(res, err, sorted);
+      _.each(results, function(r) {
+        console.log(r.id);
+      })
+      resh.send(res, err, results);
   });
 };
+
+
+/////////////
+// Helpers //
+/////////////
+
+function createError(code, msg) {
+  var error = new Error;
+  error.code = code;
+  error.message = msg;
+  return error;
+}
 
 
 module.exports = api;

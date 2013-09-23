@@ -10,6 +10,13 @@ var Mixed = Schema.Types.Mixed;
 // schema definition
 var schema = new Schema({
 
+  // parsed fields
+  // these fields are always going to be 50 digi numeric string
+  // query accordingly
+  mediaId: { type: String, required: true },
+  machineId: { type: String, required: true },
+
+  // fields straight from instagram api
   id: { type: String, required: true },
   type: { type: String, reuqired: true }, 
   created_time: { type: Number, required: true },
@@ -25,7 +32,7 @@ var schema = new Schema({
 }, { strict: false, _id: false });
 
 // indexes definition
-schema.index({ id: 1, created_time: -1 }, { unique: true });
+schema.index({ id: 1, mediaId: 1, machineId: 1 }, { unique: true });
 schema.index({ created_time: -1 });
 
 // export

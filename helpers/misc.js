@@ -19,4 +19,15 @@ misc.isObjectId = function(id) {
 	}
 };
 
+// helper to add leading zeroes to the id
+// this is a workaround for the javascript limitations with big numbers
+// will make the input 50 digits with leading zeroes
+misc.normalizeId = function(id) {
+  var i, length = 50 - id.length, leading = '';
+  for(i = 0; i < length; i++) {
+    leading += 0;
+  }
+  return leading + id;
+}
+
 module.exports = misc;

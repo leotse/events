@@ -15,6 +15,7 @@ var User = require('../models/passport-user');
 var Event = require('../models/event');
 var Medium = require('../models/medium');
 var insta = require('../helpers/instagram');
+var misc = require('../helpers/misc');
 var TagClient = insta.TagClient;
 
 // connect to db before doing anyting
@@ -91,10 +92,21 @@ function processMedium(ev, medium, complete) {
     ev.media.addToSet(id);
   }
 
+  // parse the id
+  var updates = medium.data;
+  var parts = id.split('_');
+  if(parts.length === 2) {
+    updates.mediaId = misc.normalizeId(parts[0]);
+    updates.machineId = misc.normalizeId(parts[1]);
+  }
+
+  // console.log(updates.mediaId.length);
+  // console.log(updates.machineId.length);
+
   // update the image/video cache
   Medium.update(
     { id: id },
-    medium.data,
+    updates,
     { multi: false, upsert: true },
     complete
   );
