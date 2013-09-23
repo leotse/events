@@ -69,6 +69,38 @@ routes.get = function(req, res) {
     var media = results.media;
     res.render('event/get2', { event: event, media: media });
   });
+};
+
+// DELETE /events/:_id/media
+routes.removeMedia = function(req, res) {
+  var eventId = req.params._id;
+  var itemsString = req.body.items;
+
+  // if there are no items, just return
+  if(!itemsString || itemsString.length === 0) return res.redirect('/events/' + eventId);
+
+  async.waterfall([
+
+    // get the event
+    function(done) { Event.findById(eventId, done); }, 
+
+    // and remove the pictures from it
+    function(ev, done) {
+      if(!ev) return done(createError(404, 'event not found'));
+
+      // get items to be removed from the form
+      var items = itemsString.split(',');
+      _.each(items, function(item) { 
+        ev.media.pull(item); 
+        ev.removed.addToSet(item);
+      });
+      ev.save(done);
+    }
+
+  ], function(err, result) {
+    if(err) return resh.send(res, err);
+    res.redirect('/events/' + eventId);
+  })
 }
 
 // GET /events/add

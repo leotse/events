@@ -52,45 +52,6 @@ routes.show = function(req, res) {
 };
 
 
-// delete media
-routes.del = function(req, res) {
-  var alias = req.params.alias;
-  var itemsString = req.body.items;
-
-  // if there are no items, just return
-  if(!itemsString || itemsString.length === 0) return res.redirect('/albums/' + alias);
-
-  async.waterfall([
-
-    // get the event
-    function(done) { 
-      Alias.findOne()
-        .where('alias', alias)
-        .populate('_event')
-        .exec(done); 
-    }, 
-
-    // and remove the pictures from it
-    function(alias, done) {
-      if(!alias) return done(createError(404, 'album not found'));
-
-      // get items to be removed from the form
-      var items = itemsString.split(',');
-      var ev = alias._event;
-      _.each(items, function(item) { 
-        ev.media.pull(item); 
-        ev.removed.addToSet(item);
-      });
-      ev.save(done);
-    }
-
-  ], function(err, result) {
-    if(err) return resh.send(res, err);
-    res.redirect('/albums/' + alias);
-  })
-};
-
-
 /////////////
 // Helpers //
 /////////////

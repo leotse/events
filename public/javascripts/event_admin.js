@@ -6,7 +6,8 @@
 
 $(document).ready(function() {
 	var items = [];
-	var $form = $('form.media');
+	var $form = $('form');
+	var $remove = $('.action_menu .remove');
 
 	// select image on click
 	$('.media img').click(function(e) {
@@ -23,7 +24,14 @@ $(document).ready(function() {
 		} else {
 			items.push(id);
 		}
+
+		// show/hide remove action depending on if there are items left in the selected list
+		if(items.length === 0) { $remove.addClass('hidden'); }
+		else { $remove.removeClass('hidden'); }
 	});
+
+	// submit form on remove clicked
+	$remove.click(function(e) { $form.submit(); });
 
 	// set the form data before submiting
 	$form.submit(function(e) {

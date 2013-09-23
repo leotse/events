@@ -1,32 +1,40 @@
 extends ../layout
 
+block scripts
+  script(type="text/javascript", src="/javascripts/libs/jquery.lazyscrollloading-min.js")
+  script(type="text/javascript", src="/javascripts/event_admin.js")
+
 block content
 
-  //- content header
-  div.content_header
+  form(method="post", action="/events/#{event._id}/media")
+    input(type="hidden", name="_method", value="delete")
+    input(type="hidden", name="items")
 
-    //- title
-    h1.title=event.name     
+    //- content header
+    div.content_header
 
-    //- action menu
-    div.action_menu
-      ul
-        li 
-          a(href="#{event._id}/download") Download
-        li 
-          a(href="#slideshow") Slideshow
+      //- title
+      h1.title=event.name     
 
-  //- event details
-  div.event
-    //-span.title= 
-    span.desc= event.desc
-    span.dates #{event.start.getFullYear()}.#{event.start.getMonth()}.#{event.start.getDate()} ~ #{event.end.getFullYear()}.#{event.end.getMonth()}.#{event.end.getDate()}
-    span.tag &#35;#{event.tag}    
+      //- action menu
+      div.action_menu
+        ul
+          li(class="remove hidden")
+            a(href="#remove") Remove
+          li(class="download")
+            a(href="#{event._id}/download") Download
 
-  //- event media
-  div.media
-    if media.length > 0
-      each medium in media
-        img(src="#{medium.images.thumbnail.url}", rel="#{medium.images.standard_resolution.url}")
-    else
-      div no images at this time
+    //- event details
+    div.event
+      //-span.title= d
+      span.desc= event.desc
+      span.dates #{event.start.getFullYear()}.#{event.start.getMonth()}.#{event.start.getDate()} ~ #{event.end.getFullYear()}.#{event.end.getMonth()}.#{event.end.getDate()}
+      span.tag &#35;#{event.tag}    
+
+    //- event media
+    div.media
+      if media.length > 0
+        each medium in media
+          img(src="#{medium.images.thumbnail.url}", rel="#{medium.images.standard_resolution.url}", id="#{medium.id}")
+      else
+        div no images at this time
