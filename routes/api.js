@@ -17,6 +17,8 @@ var Media = require('../models/medium');
 api.listEvents = function(req, res) {
   var _id = req.params._id;
   var from = req.query.from;
+  var maxId = req.query.max_id;
+  var minId = req.query.min_id;
 
   // make sure id is valid
   if(!misc.isObjectId(_id)) return resh.send(res, createError(400, 'invalid event id'));
@@ -30,19 +32,24 @@ api.listEvents = function(req, res) {
     function(daevent, done) {
       if(!daevent) return done(createError(404, 'event not found'));
 
-      // parse the media id
-      var parts = from.split('_');
-      var fromMediaId = misc.normalizeId(parts[0]);
-
       // build the query
       var query = Media.find()
         .where('id').in(daevent.media)
         .sort('-mediaId')
         .limit(20);
 
-      // add from condition if it's specified
-      if(from) {
-        query.where('mediaId').lt(fromMediaId)
+      // add paging conditions
+      if(from) { 
+        var parsed = misc.parseMediaId(from);
+        query.where('mediaId').lt(parsed.mediaId);
+      }
+      if(maxId) {
+        var parsed = misc.parseMediaId(maxId);
+        query.where('mediaId').lt(parsed.mediaId);
+      }
+      if(minId) { 
+        var parsed = misc.parseMediaId(minId);
+        query.where('mediaId').gt(parsed.mediaId);
       }
 
       // and execute query!
@@ -51,9 +58,7 @@ api.listEvents = function(req, res) {
 
   ], function(err, results) {
       if(err) return resh.send(res, err);
-      _.each(results, function(r) {
-        console.log(r.id);
-      })
+      // _.each(results, function(r) { console.log(r.id); });
       resh.send(res, err, results);
   });
 };
@@ -63,6 +68,9 @@ api.listEvents = function(req, res) {
 // Helpers //
 /////////////
 
+
+
+// create an error object with the proper error code
 function createError(code, msg) {
   var error = new Error;
   error.code = code;

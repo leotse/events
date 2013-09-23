@@ -19,6 +19,17 @@ misc.isObjectId = function(id) {
 	}
 };
 
+// helper to parse and normalize an instagram media id
+misc.parseMediaId = function(id) {
+	var parts = id.split('_');
+	if(parts.length !== 2) throw new Error('invalid instagram media id');
+
+	return {
+		mediaId: misc.normalizeId(parts[0]),
+		machineId: misc.normalizeId(parts[1])
+	};
+}
+
 // helper to add leading zeroes to the id
 // this is a workaround for the javascript limitations with big numbers
 // will make the input 50 digits with leading zeroes
