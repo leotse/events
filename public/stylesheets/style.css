@@ -208,6 +208,7 @@ h6 {
 }
 h1 {
   font-size: 52px;
+  line-height: 130%;
 }
 h2 {
   font-size: 48px;
@@ -238,9 +239,9 @@ header {
   -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=80);
   filter: alpha(opacity=80);
 }
-header h1.logo {
+header h1.logo a {
   font-family: 'Poiret One', cursive;
-  font-size: 24px;
+  font-size: 100%;
 }
 h1.title {
   float: left;
