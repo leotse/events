@@ -292,14 +292,10 @@ Custom style starts here
 /* General */
 /*body { padding:50px; font:14px "Lucida Grande", Helvetica, Arial, sans-serif;}*/
 * {font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; }
-
 .fixed { position: fixed; }
-
-
-
 h1, h2, h3, h4, h5, h6 { font-family: 'Poiret One', cursive; font-weight: normal; }
 
-h1 { font-size: 52px; }
+h1 { font-size: 52px; line-height: 130%; }
 h2 { font-size: 48px; }
 h3 { font-size: 32px; }
 h4 { font-size: 28px; }
@@ -307,8 +303,9 @@ h5 { font-size: 18px; }
 h6 { font-size: 16px; }
 
 /* Global Header */
-header { padding: 20px; background: #fff; .drop-shadow(0px, 0px, 2px, 0.25); .opacity(0.8); }
-header h1.logo { font-family: 'Poiret One', cursive; font-size: 24px;}
+header { background: #fff; .drop-shadow(0px, 0px, 2px, 0.25); text-align: center; vertical-align: middle; height: 65px;}
+header h1.logo a { font-size: 0; }
+header h1.logo a img { width: 350px; }
 h1.title { float: left; margin: 12px 0; }
 
 img.background_img {
@@ -353,6 +350,8 @@ form.event ul { margin:0; padding:0; list-style:none; }
 /* Events List */
 
 .events { margin:0; padding:0; list-style:none; }
+.events li { margin: 12px 0; padding: 20px; box-shadow: 1px 1px 5px #AAA; }
+.events li:hover { background: #EEE; .transition(0.2s, ease-out); }
 .event { margin:0 0 10px 0; clear: both; .text-shadow(0px 0px 50px rgba(255, 255, 255, 0.7)); }
 .event a:link { text-decoration:none; }
 .event span { display:block; margin: 12px 0; }
@@ -391,15 +390,9 @@ form.event ul { margin:0; padding:0; list-style:none; }
   width: 150px;
   height: 150px;
 }
-.media img.fade1 {
-  .fade-in(1s, 0.2s);
-}
-.media img.fade2  {
-  .fade-in(1s, 0.4s);
-}
-.media img.fade3  {
-  .fade-in(1s, 0.6s);
-}
+.media img.fade1 { .fade-in(1s, 0.2s); }
+.media img.fade2  { .fade-in(1s, 0.4s); }
+.media img.fade3  { .fade-in(1s, 0.6s); }
 .media img:hover {
   cursor: pointer;
   background-color: #0073B2;
