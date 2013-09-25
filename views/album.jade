@@ -15,7 +15,7 @@ block content
     div.action_menu
       ul
         li 
-          a(href="#{event._id}/download") Download
+          a(href="/events/#{event._id}/download") Download
         li 
           a(href="#slideshow") Slideshow
 
@@ -28,13 +28,11 @@ block content
 
   //- event media
   div.media
-    //- if media.length > 0
-    //-   each medium in media
-    //-     img(src="#{medium.images.thumbnail.url}", rel="#{medium.images.standard_resolution.url}")
-    //- else
-    //-   div no images at this time
+  div.end_of_media
 
 block scripts
+  script(type='text/javascript', src='/javascripts/libs/jquery.inview.min.js')
+  script(type='text/javascript', src='/javascripts/libs/jquery.viewport.mini.js')
   script(type='text/javascript', src='/javascripts/album.js')
   script.
     initAlbum("#{event._id}");
