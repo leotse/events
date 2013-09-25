@@ -9,17 +9,6 @@ $(document).ready(function() {
 	var $form = $('form');
 	var $remove = $('.action_menu .remove');
 
-	// add a waypoint to the last image
-	$('.media').waypoint('infinite', {
-		container: $('.media'),
-		items: '.infinite-item',
-		more: '.more',
-		offset: 'bottom-in-view',
-		loadingClass: 'loading',
-		onBeforePageLoad: $.noop,
-		onAfterPageLoad: function() { console.log(this); }
-	});
-
 	// select image on click
 	$('.media').on('click', 'img', function() {
 		var $this = $(this);
