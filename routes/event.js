@@ -52,9 +52,9 @@ routes.get = function(req, res) {
       // and get all the media for this event
       Media.find()
         .where('id').in(event.media)
-        .sort('-id')
+        .sort('-mediaId')
         .limit(20)
-        .exec(done);
+        .exec(done)
     }]
 
   }, function(err, results) {
@@ -167,7 +167,7 @@ routes.download = function(req, res) {
 
       Media.find()
         .where('id').in(ids)
-        .sort('-id')
+        .sort('-mediaId')
         .exec(done);
     }],
 

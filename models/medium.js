@@ -33,7 +33,7 @@ var schema = new Schema({
 
 // indexes definition
 schema.index({ id: 1, mediaId: 1, machineId: 1 }, { unique: true });
-schema.index({ created_time: -1 });
+schema.index({ mediaId: -1, id: 1 });
 
 // export
 module.exports = mongoose.model('Medium', schema);
