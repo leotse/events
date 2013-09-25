@@ -81,6 +81,7 @@ app.put('/events', ensureAuth(urls.LOGIN), eventRoutes.add);
 app.del('/events', ensureAuth(urls.LOGIN), eventRoutes.del);
 app.get('/events/add', ensureAuth(urls.LOGIN), eventRoutes.addView);
 app.get('/events/:_id', ensureAuth(urls.LOGIN), eventRoutes.get);
+app.get('/events/:_id/more', ensureAuth(urls.LOGIN), eventRoutes.getMore);
 app.get('/events/:_id/download', ensureAuth(urls.LOGIN), eventRoutes.download);
 app.get('/events/:_id/share', ensureAuth(urls.LOGIN), eventRoutes.share);
 app.del('/events/:_id/media', ensureAuth(urls.LOGIN), eventRoutes.removeMedia);

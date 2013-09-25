@@ -1,7 +1,8 @@
 extends ../layout
 
 block scripts
-  script(type="text/javascript", src="/javascripts/libs/jquery.lazyscrollloading-min.js")
+  script(type="text/javascript", src="/javascripts/libs/waypoints.min.js")
+  script(type="text/javascript", src="/javascripts/libs/waypoints-infinite.min.js")
   script(type="text/javascript", src="/javascripts/event_admin.js")
 
 block content
@@ -35,6 +36,8 @@ block content
     div.media
       if media.length > 0
         each medium in media
-          img(src="#{medium.images.thumbnail.url}", rel="#{medium.images.standard_resolution.url}", id="#{medium.id}")
+          img.item(src="#{medium.images.thumbnail.url}", id="#{medium.id}")
       else
         div no images at this time
+    div.lazy-loading
+      a.more(href="/events/#{event._id}/more") more

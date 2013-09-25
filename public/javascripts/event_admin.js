@@ -9,8 +9,19 @@ $(document).ready(function() {
 	var $form = $('form');
 	var $remove = $('.action_menu .remove');
 
+	// add a waypoint to the last image
+	$('.media').waypoint('infinite', {
+		container: $('.media'),
+		items: '.infinite-item',
+		more: '.more',
+		offset: 'bottom-in-view',
+		loadingClass: 'loading',
+		onBeforePageLoad: $.noop,
+		onAfterPageLoad: function() { console.log(this); }
+	});
+
 	// select image on click
-	$('.media img').click(function(e) {
+	$('.media').on('click', 'img', function() {
 		var $this = $(this);
 		var id = this.id;
 
@@ -31,10 +42,10 @@ $(document).ready(function() {
 	});
 
 	// submit form on remove clicked
-	$remove.click(function(e) { $form.submit(); });
+	$remove.click(function() { $form.submit(); });
 
 	// set the form data before submiting
-	$form.submit(function(e) {
+	$form.submit(function() {
 		$form[0].items.value = items;
 	});
 });
