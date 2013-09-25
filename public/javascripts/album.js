@@ -10,13 +10,18 @@ function initAlbum(eventId) {
     if(length > 0) {
       for (var i = 0; i < length; i++) {
         //$(".media").prepend("<img class='fade" + (i % 3) + "' src='" + data[i].images.thumbnail.url + "' rel='" + data[i].images.standard_resolution.url + "'/>");        
-        $(".media").append("<img class='fade" + (i % 3) + "' src='" + data[i].images.thumbnail.url + "' rel='" + data[i].images.standard_resolution.url + "'/>");        
+        // $(".media").append("<img class='fade" + (i % 3) + "' src='" + data[i].images.thumbnail.url + "' rel='" + data[i].images.standard_resolution.url + "'/>");        
+        $(".media").append("<img class='fade2' src='" + data[i].images.thumbnail.url + "' rel='" + data[i].images.standard_resolution.url + "'/>");        
       }        
 
       // update last id
       minId = data[0].id;
       maxId = data[length - 1].id;
       console.log("max:" + maxId + " min:" + minId);
+
+      if($(".end_of_media:in-viewport").length > 0) {
+        lazyload();
+      }
     }
   }
 
@@ -50,7 +55,7 @@ function initAlbum(eventId) {
   }
 
   function lazyload() {
-    if ($(window).scrollTop() >= $(document).height() - $(window).height() - 10) {
+    //if ($(window).scrollTop() >= $(document).height() - $(window).height() - 10) {
       $.ajax({
         type: 'GET',
         dataType: 'json',
@@ -58,10 +63,10 @@ function initAlbum(eventId) {
         success: function (data) {
           console.log(data);
           // if there's data, refresh grid
-          if(data.length > 0) refresh(data);
+          if(data.length > 0) refresh(data);                    
         }
       });      
-    }
+    //}
   }
 
   $(document).ready(function() {
@@ -71,7 +76,7 @@ function initAlbum(eventId) {
     myHeader.data( 'position', myHeader.position() );
     myContentHeader.data( 'position', myContentHeader.position() );
 
-    $(window).scroll(function(){
+    $(window).scroll(function() {
       hPos = myContentHeader.data('position'), scroll = getScroll();
       if ( hPos.top < scroll.top ) {
         myContentHeader.addClass('fixed');
@@ -81,9 +86,11 @@ function initAlbum(eventId) {
       }
     });
 
-    $(window).scroll(lazyload);
+    $('.end_of_media').bind('inview', function(event, visible) {
+      if (visible) {
+        lazyload();
+      } 
+    });    
     lazyload();
-
   });
-
 }
