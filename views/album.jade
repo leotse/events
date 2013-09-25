@@ -1,8 +1,40 @@
 extends layout
 
 block content
-  h1 album - #{event.name}
-  h4= event.desc
+
+  //- bg img
+  img(class="background_img", src="/images/background1.jpg")
+
+  //- content header
+  div.content_header
+
+    //- title
+    h1.title=event.name     
+
+    //- action menu
+    div.action_menu
+      ul
+        li 
+          a(href="#{event._id}/download") Download
+        li 
+          a(href="#slideshow") Slideshow
+
+  //- event details
+  div.event
+    //-span.title= 
+    span.desc= event.desc
+    span.dates #{event.start.getFullYear()}.#{event.start.getMonth()}.#{event.start.getDate()} ~ #{event.end.getFullYear()}.#{event.end.getMonth()}.#{event.end.getDate()}
+    span.tag &#35;#{event.tag}    
+
+  //- event media
   div.media
-    each m in media
-      img(src="#{m.images.standard_resolution.url}" id="#{m.id}")
+    //- if media.length > 0
+    //-   each medium in media
+    //-     img(src="#{medium.images.thumbnail.url}", rel="#{medium.images.standard_resolution.url}")
+    //- else
+    //-   div no images at this time
+
+block scripts
+  script(type='text/javascript', src='/javascripts/album.js')
+  script.
+    initAlbum("#{event._id}");
