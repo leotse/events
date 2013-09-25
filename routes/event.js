@@ -67,44 +67,6 @@ routes.get = function(req, res) {
   });
 };
 
-// GET /events/:_id/more
-routes.getMore = function(req, res) {
-
-  // make sure id is valid
-  var _id = req.params._id;
-  if(!misc.isObjectId(_id)) return resh.send(res, createError(400, 'invalid event id'));
-
-  async.auto({
-
-    // first get the event object
-    event: function(done) { Event.findById(req.params._id, done); },
-
-    // then get the media associated to this event
-    media: [ 'event', function(done, results) {
-      var event = results.event;
-
-      // make sure event is found
-      if(!event) return done(createError(404, 'event not found'));
-
-      // and get all the media for this event
-      Media.find()
-        .where('id').in(event.media)
-        .sort('-id')
-        .limit(20)
-        .skip(20)
-        .exec(done);
-    }]
-
-  }, function(err, results) {
-    if(err) return resh.send(res, err);
-
-    // return the ajax images
-    var event = results.event;
-    var media = results.media;
-    res.render('event/more', { event: event, media: media });
-  });
-}
-
 // DELETE /events/:_id/media
 routes.removeMedia = function(req, res) {
   var eventId = req.params._id;
