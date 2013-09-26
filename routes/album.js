@@ -31,7 +31,7 @@ routes.show = function(req, res) {
     media: [ 'alias', function(done, results) {
 
       var alias = results.alias;
-      if(!alias) return done(res, createError(404, 'album not found'));
+      if(!alias) return done(createError(404, 'album not found'));
 
       var ev = alias._event;
       var media = ev.media;

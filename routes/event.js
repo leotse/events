@@ -63,7 +63,7 @@ routes.get = function(req, res) {
     // finally render the page!
     var event = results.event;
     var media = results.media;
-    res.render('event/get2', { event: event, media: media });
+    res.render('event/get', { event: event, media: media });
   });
 };
 

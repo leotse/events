@@ -19,13 +19,11 @@ auth.authenticate = function(id, password, done) {
 
 // serialize user
 auth.serializeUser = function(user, done) {
-  console.log('serialize');
   done(null, user._id);
 };
 
 // deserialize user
 auth.deserializeUser = function(_id, done) {
-  console.log('deserialize');
   User.findById(_id, function(err, user) {
     if(err) return done(err);
     return done(null, user);

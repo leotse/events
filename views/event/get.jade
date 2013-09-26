@@ -1,41 +1,43 @@
 extends ../layout
 
+block scripts
+  script(type='text/javascript', src='/javascripts/libs/jquery.viewport.mini.js')
+  script(type="text/javascript", src="/javascripts/event_admin.js")
+  script.
+    adminInit('#{event._id}', '#{media[media.length - 1].id}');
+
 block content
 
-  //- bg img
-  img(class="background_img", src="/images/background1.jpg")
+  form(method="post", action="/events/#{event._id}/media")
+    input(type="hidden", name="_method", value="delete")
+    input(type="hidden", name="items")
 
+    //- content header
+    div.content_header
 
-  //- content header
-  div.content_header
+      //- title
+      h1.title=event.name     
 
-    //- title
-    h1.title=event.name     
+      //- action menu
+      div.action_menu
+        ul
+          li(class="remove hidden")
+            a(href="javascript:void(0);") Remove
+          li(class="download")
+            a(href="#{event._id}/download") Download
 
-    //- action menu
-    div.action_menu
-      ul
-        li 
-          a(href="#{event._id}/download") Download
-        li 
-          a(href="#slideshow") Slideshow
+    //- event details
+    div.event
+      //-span.title= d
+      span.desc= event.desc
+      span.dates #{event.start.getFullYear()}.#{event.start.getMonth()}.#{event.start.getDate()} ~ #{event.end.getFullYear()}.#{event.end.getMonth()}.#{event.end.getDate()}
+      span.tag &#35;#{event.tag}    
 
-  //- event details
-  div.event
-    //-span.title= 
-    span.desc= event.desc
-    span.dates #{event.start.getFullYear()}.#{event.start.getMonth()}.#{event.start.getDate()} ~ #{event.end.getFullYear()}.#{event.end.getMonth()}.#{event.end.getDate()}
-    span.tag &#35;#{event.tag}    
-
-  //- event media
-  div.media
-    //- if media.length > 0
-    //-   each medium in media
-    //-     img(src="#{medium.images.thumbnail.url}", rel="#{medium.images.standard_resolution.url}")
-    //- else
-    //-   div no images at this time
-
-block scripts
-  //- layout
-  script.
-
+    //- event media
+    div.media
+      if media.length > 0
+        each medium in media
+          img.item(src="#{medium.images.thumbnail.url}", id="#{medium.id}")
+      else
+        div no images at this time
+    div.end
