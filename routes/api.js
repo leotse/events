@@ -12,6 +12,7 @@ var resh = require('../helpers/res');
 var misc = require('../helpers/misc');
 var Event = require('../models/event');
 var Media = require('../models/medium');
+var EventMedia = require('../models/eventmedium');
 
 // list events
 api.listEvents = function(req, res) {
@@ -23,26 +24,17 @@ api.listEvents = function(req, res) {
   // make sure id is valid
   if(!misc.isObjectId(_id)) return resh.send(res, createError(400, 'invalid event id'));
 
+  // testing new schema
   async.waterfall([
 
-    // get the event!
-    function(done) { Event.findById(_id, done); },
-
-    // page the media!
-    function(daevent, done) {
-      if(!daevent) return done(createError(404, 'event not found'));
-
-      // build the query
-      var query = Media.find()
-        .where('id').in(daevent.media)
+    // get the event's media
+    function(done) { 
+      var query = EventMedia.find()
+        .where('_event', _id)
         .sort('-mediaId')
         .limit(20);
 
-      // add paging conditions
-      if(from) { 
-        var parsed = misc.parseMediaId(from);
-        query.where('mediaId').lt(parsed.mediaId);
-      }
+      // apply the min and max id conditions
       if(maxId) {
         var parsed = misc.parseMediaId(maxId);
         query.where('mediaId').lt(parsed.mediaId);
@@ -54,12 +46,23 @@ api.listEvents = function(req, res) {
 
       // and execute query!
       query.exec(done);
+    },
+
+    // get the media objects
+    function(em, done) {
+      var ids = _.pluck(em, 'id');
+      Media.find()
+        .where('id').in(ids)
+        .exec(done);
     }
 
   ], function(err, results) {
       if(err) return resh.send(res, err);
-      // _.each(results, function(r) { console.log(r.id); });
-      resh.send(res, err, results);
+      var sorted = _.sortBy(results, function(item) { return -item.mediaId; });
+      resh.send(res, err, sorted);
+
+      // // debug output
+      // _.each(sorted, function(r) { console.log(r.id); });
   });
 };
 
