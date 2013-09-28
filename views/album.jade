@@ -3,7 +3,7 @@ extends layout
 block content
 
   //- bg img
-  img(class="background_img", src="/images/background1.jpg")
+  //-img(class="background_img", src="/images/background1.jpg")
 
   //- content header
   div.content_header
@@ -15,9 +15,9 @@ block content
     div.action_menu
       ul
         li 
-          a(href="/events/#{event._id}/download") Download
+          a(id="action_download", href="/events/#{event._id}/download") Download
         li 
-          a(href="#slideshow") Slideshow
+          a(id="action_slideshow", href="#slideshow") Slideshow
 
   //- event details
   div.event
@@ -25,6 +25,16 @@ block content
     span.desc= event.desc
     span.dates #{event.start.getFullYear()}.#{event.start.getMonth()}.#{event.start.getDate()} ~ #{event.end.getFullYear()}.#{event.end.getMonth()}.#{event.end.getDate()}
     span.tag &#35;#{event.tag}    
+
+  div.overlay
+    //- slideshow layer
+    //-div.slideshow
+
+    //- media details popup
+    div.media_popup
+      img
+      div.media_details
+        div.overlay_close X
 
   //- event media
   div.media

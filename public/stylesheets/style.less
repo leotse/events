@@ -308,15 +308,7 @@ header h1.logo a { font-size: 0; }
 header h1.logo a img { width: 350px; }
 h1.title { float: left; margin: 12px 0; }
 
-img.background_img {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  /*.blur(5px);
-  .opacity(0.5);*/
-  z-index: -999;
-}
+img.background_img { position: fixed; top: 0;left: 0; width: 100%;  /*.blur(5px); .opacity(0.5);*/  z-index: -999; }
 
 #main_content { margin: 0 auto; width: 95%;}
 
@@ -326,12 +318,13 @@ a:active { text-decoration: none; }
 
 /* Menus */
 .action_menu { float: right; margin-left: 50px; margin-right: 20px; height: 100%; vertical-align: middle; padding: 32px 0; }
-.action_menu > ul {}
-.action_menu > ul > li { list-style: none; display: inline; padding: 30px; font-size: 18px; }
-.action_menu > ul > li:hover { background-color: #222; .transition(0.2s); }
+.action_menu > ul {  margin-top: 1px; }
+.action_menu > ul > li { list-style: none; display: inline; }
+.action_menu > ul > li > a { padding: 30px; font-size: 18px;  }
+.action_menu > ul > li > a:hover { background-color: #EEE; .transition(0.2s); }
 
-.fixed > .action_menu > ul > li { border-left: dashed 1px #888; font-size: 14px; }
-.fixed > .action_menu > ul > li:last-child { border-right: dashed 1px #888;}
+.fixed > .action_menu > ul > li > a { border-left: solid 1px #EEE; font-size: 14px; }
+.fixed > .action_menu > ul > li:last-child > a { border-right: solid 1px #EEE;}
 
 /* Register Form */
 form.register ul { margin:0; padding:0; list-style:none; }
@@ -384,7 +377,7 @@ form.event ul { margin:0; padding:0; list-style:none; }
   text-align: center;
 }
 .media img { 
-  margin: 2px; 
+  margin: 0px; 
   padding:0;  
   .transition(0.2s, ease-out);
   width: 150px;
@@ -396,15 +389,37 @@ form.event ul { margin:0; padding:0; list-style:none; }
 .media img:hover {
   cursor: pointer;
   background-color: #0073B2;
-  .drop-shadow(1px, 1px, 20px, 0.8);
+  .drop-shadow(1px, 0px, 20px, 0.7);
   .transition(0.2s, ease-in);
-  margin-top: -2px;
-  margin-left: -2px;
-  margin-right: 6px;
-  margin-bottom: 6px;
+  /*margin-top: -1px;
+  margin-left: 0px;
+  margin-right: 0px;
+  margin-bottom: 1px;
 /*  width: 160px;
   height: 160px;*/
 }
+
+
+/* overlay */
+.overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 999999; background: rgba(0, 0, 0, 0.9); display: none; }
+.media_popup {color: #888;
+background: #000;
+height: 612px;
+width: 800px;
+position: absolute;
+left: 50%;
+top: 50%;
+margin-left: -400px;
+margin-top: -306px;
+overflow-y: auto;
+overflow-x: hidden;
+}
+.media_popup img { float: left;}
+.media_details { margin: 15px 15px 15px 627px;  }
+.media_details div { margin: 10px 0; }
+.overlay_close { text-align: right; margin: 10px; }
+
+
 
 /* added by Leo */
 .action_menu > ul > li.remove.hidden { display: none; }

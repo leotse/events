@@ -7,17 +7,27 @@ function initAlbum(eventId) {
   function refresh(data) {
     var $medialist = $(".media");
     var length = data.length; 
+
     if(length > 0) {
       for (var i = 0; i < length; i++) {
         //$(".media").prepend("<img class='fade" + (i % 3) + "' src='" + data[i].images.thumbnail.url + "' rel='" + data[i].images.standard_resolution.url + "'/>");        
         // $(".media").append("<img class='fade" + (i % 3) + "' src='" + data[i].images.thumbnail.url + "' rel='" + data[i].images.standard_resolution.url + "'/>");        
-        $(".media").append("<img class='fade2' src='" + data[i].images.thumbnail.url + "' rel='" + data[i].images.standard_resolution.url + "'/>");        
+        
+        // create image
+        var $img = $("<img class='fade2' src='" + data[i].images.thumbnail.url + "' rel='" + data[i].id + "'/>");
+        
+        // append image
+        $(".media").append($img);
+
+        // hook up click handler     
+        $img.click(mediaDetailsHandler); 
+        cachedList.push(data[i]);
       }        
 
       // update last id
       minId = data[0].id;
       maxId = data[length - 1].id;
-      console.log("max:" + maxId + " min:" + minId);
+      //console.log("max:" + maxId + " min:" + minId);
 
       if($(".end_of_media:in-viewport").length > 0) {
         lazyload();
@@ -42,7 +52,7 @@ function initAlbum(eventId) {
   function pollAgain() {
     setTimeout(function () {
       poll();
-    }, 1000);
+    }, 1000); // to-do: set this to 15 min for production
   };
 
   function getScroll () {
@@ -69,6 +79,36 @@ function initAlbum(eventId) {
     //}
   }
 
+  function slideshowHandler(e) {
+    $(".overlay").show();
+    $("body").attr("style", "overflow: hidden");
+  }
+
+  function findMediaItemById(id) {
+    var l=cachedList.length;
+    for(var i=0; i<l; i++) {
+      if(cachedList[i].id === id) return cachedList[i];
+    }
+    return undefined;
+  }
+
+  function mediaDetailsHandler(e) {
+    $(".overlay").show();
+    $("body").attr("style", "overflow: hidden");
+    console.log(this);
+
+    var id = $(this).attr("rel");
+
+    if(id != "") {
+      console.log("here");
+      var media = findMediaItemById(id);
+      $(".media_details").append("<div class='fade1'>"+media.caption.text+"</div>");
+      $(".media_details").append("<div class='fade2'>By: "+media.user.full_name+"</div>");
+      $(".media_details").append("<div class='fade3'>Date: "+media.created_time+"</div>");
+      $(".media_popup img").attr("src", media.images.standard_resolution.url);
+    }
+  }
+
   $(document).ready(function() {
     var myHeader = $('header');
     var myContentHeader = $('.content_header');
@@ -92,5 +132,8 @@ function initAlbum(eventId) {
       } 
     });    
     lazyload();
+
+    $('#action_slideshow').click(slideshowHandler);
+
   });
 }
