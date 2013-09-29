@@ -38,7 +38,7 @@ function start(err) {
 	function processMedia(event, mediaId, done) {
 		var parsed = misc.parseMediaId(mediaId);
 		EventMedium.findOneAndUpdate(
-			{ id: mediaId },
+			{ _event: event._id, id: mediaId },
 			{ _event: event._id, id: mediaId, mediaId: parsed.mediaId, machineId: parsed.machineId },
 			{ upsert: true },
 			done

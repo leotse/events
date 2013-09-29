@@ -22,6 +22,7 @@ var schema = new Schema({
 }, { strict: false, _id: false });
 
 // indexes definition
+schema.index({ _event: 1, id: 1 }, { unique: true });
 schema.index({ _event: 1, mediaId: 1, machineId: 1 }, { unique: true });
 
 // generate media id and machine id before saving

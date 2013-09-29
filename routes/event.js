@@ -14,6 +14,7 @@ var resh = require('../helpers/res');
 var misc = require('../helpers/misc');
 var Event = require('../models/event');
 var Media = require('../models/medium');
+var EventMedia = require('../models/eventmedium');
 var Alias = require('../models/alias');
 
 // GET /events
@@ -42,28 +43,46 @@ routes.get = function(req, res) {
     // first get the event object
     event: function(done) { Event.findById(req.params._id, done); },
 
-    // then get the media associated to this event
-    media: [ 'event', function(done, results) {
-      var event = results.event;
+    // also get the event media
+    eventmedia: function(done) { 
+      EventMedia.find()
+        .where('_event', _id)
+        .sort('-mediaId')
+        .limit(20)
+        .exec(done);
+    },
 
-      // make sure event is found
-      if(!event) return done(createError(404, 'event not found'));
+    // then get the media associated to this event
+    media: [ 'eventmedia', function(done, results) {
+      var eventmedia = results.eventmedia;
+      var ids = _.pluck(eventmedia, 'id');
 
       // and get all the media for this event
       Media.find()
-        .where('id').in(event.media)
-        .sort('-mediaId')
-        .limit(20)
-        .exec(done)
+        .where('id').in(ids)
+        .exec(done);
     }]
 
   }, function(err, results) {
     if(err) return resh.send(res, err);
 
-    // finally render the page!
+    // make sure the event exist
     var event = results.event;
     var media = results.media;
-    res.render('event/get', { event: event, media: media });
+    if(!event) return resh.send(res, new Error('event not found'));
+
+    // and sort the media properly
+    var mediaId;
+    var sorted = _.sortBy(media, function(m) { 
+      mediaId = misc.parseMediaId(m.id).mediaId;
+      return -mediaId;
+    });
+
+    // finally render the page!
+    res.render('event/get', { event: event, media: sorted });
+
+    // // debug output
+    // _.each(sorted, function(r) { console.log(r.id); });
   });
 };
 

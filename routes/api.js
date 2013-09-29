@@ -58,7 +58,14 @@ api.listEvents = function(req, res) {
 
   ], function(err, results) {
       if(err) return resh.send(res, err);
-      var sorted = _.sortBy(results, function(item) { return -item.mediaId; });
+
+      // sort the result
+      var mediaId;
+      var sorted = _.sortBy(results, function(m) { 
+        mediaId = misc.parseMediaId(m.id).mediaId;
+        return -mediaId;
+      });
+      
       resh.send(res, err, sorted);
 
       // // debug output

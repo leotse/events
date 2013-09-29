@@ -14,6 +14,7 @@ var config = require('../config');
 var User = require('../models/passport-user');
 var Event = require('../models/event');
 var Medium = require('../models/medium');
+var EventMedium = require('../models/eventmedium');
 var insta = require('../helpers/instagram');
 var misc = require('../helpers/misc');
 var TagClient = insta.TagClient;
@@ -85,29 +86,30 @@ function processEvent(ev, processEventComplete) {
 
 // process a single medium (image or video)
 function processMedium(ev, medium, complete) {
-
-  // add this image/video to the event if it was not removed from the event
   var id = medium.data.id;
-  if(ev.removed.indexOf(id) < 0) {
-    ev.media.addToSet(id);
-  }
+  var parsed = misc.parseMediaId(id);
 
-  // parse the id
-  var updates = medium.data;
-  var parts = id.split('_');
-  if(parts.length === 2) {
-    updates.mediaId = misc.normalizeId(parts[0]);
-    updates.machineId = misc.normalizeId(parts[1]);
-  }
+  async.parallel([
 
-  // console.log(updates.mediaId.length);
-  // console.log(updates.machineId.length);
+    // create the event-media mapping
+    function(done) {
+      EventMedium.findOneAndUpdate(
+        { _event: ev._id, id: medium.data.id },
+        { _event: ev._id, id: id, mediaId: parsed.mediaId, machineId: parsed.machineId },
+        { upsert: true },
+        done
+      );
+    },
 
-  // update the image/video cache
-  Medium.update(
-    { id: id },
-    updates,
-    { multi: false, upsert: true },
-    complete
-  );
+    // update the image/video cache
+    function(done) {
+      Medium.update(
+        { id: id },
+        medium.data,
+        { multi: false, upsert: true },
+        complete
+      );
+    }
+
+  ], complete);
 }
