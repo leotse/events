@@ -171,6 +171,13 @@
   -ms-filter: blur(@radius);
   filter: blur(@radius);
 }
+.brightness(@alpha: 0.5) {
+  -webkit-filter: brightness(@alpha);
+  -moz-filter: brightness(@alpha);
+  -o-filter: brightness(@alpha);
+  -ms-filter: brightness(@alpha);
+  filter: brightness(@alpha);
+}
 
 /* make keyframes that tell the start state and the end state of our object */
 @-webkit-keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
@@ -302,23 +309,21 @@ h4 { font-size: 28px; }
 h5 { font-size: 18px; }
 h6 { font-size: 16px; }
 
+/* Fade sets */
+.fade1 { .fade-in(1s, 0.2s); }
+.fade2  { .fade-in(1s, 0.4s); }
+.fade3  { .fade-in(1s, 0.6s); }
+
 /* Global Header */
-header { background: #fff; .drop-shadow(0px, 0px, 2px, 0.25); text-align: center; vertical-align: middle; height: 65px;}
+header { background: #fff; padding-left: 40px; .drop-shadow(0px, 0px, 2px, 0.25); vertical-align: middle; height: 65px; }
+header h1 {line-height: 125%; }
 header h1.logo a { font-size: 0; }
-header h1.logo a img { width: 350px; }
+header h1.logo a img { width: 210px; }
 h1.title { float: left; margin: 12px 0; }
 
-img.background_img {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  /*.blur(5px);
-  .opacity(0.5);*/
-  z-index: -999;
-}
+img.background_img { position: fixed; top: 0;left: 0; width: 100%;  /*.blur(5px); .opacity(0.5);*/  z-index: -999; }
 
-#main_content { margin: 0 auto; width: 95%;}
+#main_content { margin: 0 50px; }
 
 a { color:#00B7FF; text-decoration: none; }
 a:hover { color: #0077ff; text-decoration: underline; }
@@ -326,12 +331,13 @@ a:active { text-decoration: none; }
 
 /* Menus */
 .action_menu { float: right; margin-left: 50px; margin-right: 20px; height: 100%; vertical-align: middle; padding: 32px 0; }
-.action_menu > ul {}
-.action_menu > ul > li { list-style: none; display: inline; padding: 30px; font-size: 18px; }
-.action_menu > ul > li:hover { background-color: #222; .transition(0.2s); }
+.action_menu > ul {  margin-top: 1px; }
+.action_menu > ul > li { list-style: none; display: inline; }
+.action_menu > ul > li > a { padding: 30px; font-size: 18px;  }
+.action_menu > ul > li > a:hover { background-color: #EEE; .transition(0.2s); }
 
-.fixed > .action_menu > ul > li { border-left: dashed 1px #888; font-size: 14px; }
-.fixed > .action_menu > ul > li:last-child { border-right: dashed 1px #888;}
+.fixed > .action_menu > ul > li > a { border-left: solid 1px #EEE; font-size: 14px; }
+.fixed > .action_menu > ul > li:last-child > a { border-right: solid 1px #EEE;}
 
 /* Register Form */
 form.register ul { margin:0; padding:0; list-style:none; }
@@ -355,15 +361,16 @@ form.event ul { margin:0; padding:0; list-style:none; }
 .event { margin:0 0 10px 0; clear: both; .text-shadow(0px 0px 50px rgba(255, 255, 255, 0.7)); }
 .event a:link { text-decoration:none; }
 .event span { display:block; margin: 12px 0; }
-.event span.title { font-weight:900; }
-.event span.desc { font-weight:100; }
-.event span.tag { font-style:oblique; font-size: 20px; }
+.event span.title { font-weight: 400; }
+.event span.desc { font-weight: 300; font-size: 18px; }
+.event span.dates, .event span.tag { font-weight: 300; font-size: 18px; color: #666;}
 
 /* Content Header */
 .content_header { .transitionHeight(0.2s, ease-out); }
 .content_header.fixed { 
-  top: 0; 
-  width: 95%; 
+  top: 0;
+  left: 0;
+  width: 100%; 
   background: #fff; 
   .drop-shadow(0px, 1px, 2px, 0.25); 
   .opacity(0.9); 
@@ -374,7 +381,9 @@ form.event ul { margin:0; padding:0; list-style:none; }
   .opacity(1); 
   .transitionHeight(0.2s, ease-in);
 }
-.content_header.fixed h1.title { margin-left: 36px; }
+.content_header.fixed h1.title { margin-left: 36px; font-size: 32px; }
+.content_header.fixed .action_menu { padding: 24px 0; }
+.content_header.fixed .action_menu > ul > li > a { padding-top: 22px; padding-bottom: 22px; }
 
 /* Media List */
 .media { 
@@ -383,28 +392,58 @@ form.event ul { margin:0; padding:0; list-style:none; }
   list-style:none; 
   text-align: center;
 }
+.media figure { 
+  overflow: hidden;
+    width: 150px;
+  height: 150px;
+  display: inline-block;
+}
 .media img { 
-  margin: 2px; 
+  margin: 0px; 
   padding:0;  
-  .transition(0.2s, ease-out);
+  .transition(0.3s, ease-out);
   width: 150px;
   height: 150px;
+  overflow: hidden;
 }
-.media img.fade1 { .fade-in(1s, 0.2s); }
-.media img.fade2  { .fade-in(1s, 0.4s); }
-.media img.fade3  { .fade-in(1s, 0.6s); }
-.media img:hover {
+.media img:hover {   .transform(scale(1.02)); }
+.media figure:hover {
   cursor: pointer;
   background-color: #0073B2;
-  .drop-shadow(1px, 1px, 20px, 0.8);
-  .transition(0.2s, ease-in);
-  margin-top: -2px;
-  margin-left: -2px;
-  margin-right: 6px;
-  margin-bottom: 6px;
+  .drop-shadow(1px, 0px, 20px, 0.7);
+  .brightness(120%);
+  .transition(0.3s, ease-in);
+
+  /*margin-top: -1px;
+  margin-left: 0px;
+  margin-right: 0px;
+  margin-bottom: 1px;
 /*  width: 160px;
   height: 160px;*/
 }
+
+
+/* overlay */
+.overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 999999; background: rgba(0, 0, 0, 0.9); display: none; }
+.media_popup {color: #777;
+background: #000;
+height: 612px;
+width: 900px;
+position: absolute;
+left: 50%;
+top: 50%;
+margin-left: -450px;
+margin-top: -306px;
+overflow: hidden;
+}
+.media_img_container { float: left;}
+.media_details { margin: 15px 15px 15px 640px; overflow-x: hidden; overflow-y: auto; }
+.media_details div { margin: 10px 0; font-weight: 300; }
+.overlay_close { height: 20px; text-align: right; margin: 10px; background: url(data:image/gif;base64,R0lGODlhFAAUAJEAAE1NTf///////wAAACH5BAEHAAIALAAAAAAUABQAAAIzBISpK+YMm5Enpodw1HlCfnkKOIqU1VXk55goVb2hi7Y0q95lfG70uurNaqLgTviyyUoFADs=) no-repeat right center; .opacity(0.5); .transition(0.1s, ease-in);}
+.overlay_close:hover { cursor: pointer; .opacity(1); .transition(0.1s, ease-in); }
+.media_details > .details_desc { color: #EEE; margin-bottom: 30px; }
+.media_details > .details_author, .media_details > .details_created { margin-left: 70px; }
+.details_author_img { border-radius: 200px; width: 50px; float: left; }
 
 /* added by Leo */
 .action_menu > ul > li.remove.hidden { display: none; }

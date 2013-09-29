@@ -199,7 +199,14 @@
 		return this.each(function () {
 			var $glue = $(this);
 			var $source = $(options.source);
-			var formattedSource = ($source.css('backgroundImage')).replace(/"/g, "").replace(/url\(|\)$/ig, "");
+			/* start - edited by Kent - to fix issues with the logic only blurring background but ignoring img*/
+			/*var formattedSource = ($source.css('backgroundImage')).replace(/"/g, "").replace(/url\(|\)$/ig, "");*/			
+			var formattedSource;
+			if($source.is('img'))
+			    formattedSource = $source.attr('src');
+			else
+			    formattedSource = ($source.css('backgroundImage')).replace(/"/g, "").replace(/url\(|\)$/ig, "");
+			/* end - edited by Kent */
 			ctx = canvas.getContext('2d');
 			tempImg = new Image();
 			tempImg.onload = function () {

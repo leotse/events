@@ -3,28 +3,37 @@ extends layout
 block content
 
   //- bg img
-  img(class="background_img", src="/images/background1.jpg")
+  //-img(class="background_img", src="/images/background1.jpg")
 
   //- content header
   div.content_header
 
     //- title
-    h1.title=event.name     
+    h1.title.fade1=event.name     
 
     //- action menu
-    div.action_menu
+    div.action_menu.fade2
       ul
         li 
-          a(href="/events/#{event._id}/download") Download
+          a(id="action_download", href="/events/#{event._id}/download") Download
         li 
-          a(href="#slideshow") Slideshow
+          a(id="action_slideshow", href="#slideshow") Slideshow
 
   //- event details
-  div.event
+  div.event.fade1
     //-span.title= 
     span.desc= event.desc
     span.dates #{event.start.getFullYear()}.#{event.start.getMonth()}.#{event.start.getDate()} ~ #{event.end.getFullYear()}.#{event.end.getMonth()}.#{event.end.getDate()}
     span.tag &#35;#{event.tag}    
+
+  div.overlay
+    //- media details popup
+    div.media_popup
+      div.media_img_container
+        img
+      div.overlay_close
+      div.media_details
+        
 
   //- event media
   div.media
