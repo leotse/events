@@ -1,25 +1,31 @@
 function initAlbum(eventId) {
 
   var maxId = "", minId = "";
-  var cachedList = []; // not in use yet
-  var set = false;
+  var cachedList = []; // cache of all the images loaded in view
+  var newImages = []; // cache of all the new images in polling, but not loaded
+  var lastScroll = 0; // for detecting scroll up or down
 
   var myHeader, myContentHeader;
 
-  function refresh(data) {
+  // refresh UI with the new data
+  function refresh(data, prepend) {
     var $medialist = $(".media");
     var length = data.length; 
+    var append = prepend === undefined || prepend === false;
 
     if(length > 0) {
       for (var i = 0; i < length; i++) {
-        //$(".media").prepend("<img class='fade" + (i % 3) + "' src='" + data[i].images.thumbnail.url + "' rel='" + data[i].images.standard_resolution.url + "'/>");        
-        // $(".media").append("<img class='fade" + (i % 3) + "' src='" + data[i].images.thumbnail.url + "' rel='" + data[i].images.standard_resolution.url + "'/>");        
-        
         // create image
         var $img = $("<img class='fade2' src='" + data[i].images.thumbnail.url + "' rel='" + data[i].id + "'/>");
-        
+        var $figure = $("<figure></figure>");
+
         // append image
-        $(".media").append($img);
+        $figure.append($img);
+
+        if(append)           
+          $(".media").append($figure);
+        else
+          $(".media").prepend($figure);
 
         // hook up click handler     
         $img.click(mediaDetailsHandler); 
@@ -29,9 +35,9 @@ function initAlbum(eventId) {
       // update last id
       minId = data[0].id;
       maxId = data[length - 1].id;
-      //console.log("max:" + maxId + " min:" + minId);
 
-      if($(".end_of_media:in-viewport").length > 0) {
+      // if page is not filled yet
+      if(append && $(".end_of_media:in-viewport").length > 0) {
         lazyload();
       }
     }
@@ -106,8 +112,7 @@ function initAlbum(eventId) {
 
     var id = $(this).attr("rel");
 
-    if(id != "") {
-      console.log("here");
+    if(id !== "") {
       var media = findMediaItemById(id);      
       var created = media.created_time;
       $(".media_details").html("");
@@ -120,14 +125,16 @@ function initAlbum(eventId) {
     }
   }
 
-  function scrollFixedTopHandler() {
+  function scrollHandler() {
     var hPos = myContentHeader.data('position'), scroll = getScroll();
     if ( hPos.top < scroll.top ) {
       myContentHeader.addClass('fixed');
+      $(".event").css("margin-top", "120px");
     }
     else {
       myContentHeader.removeClass('fixed');
-    }
+      $(".event").css("margin-top", "0");
+    }    
   }
 
   $(document).ready(function() {
@@ -136,7 +143,7 @@ function initAlbum(eventId) {
     myHeader.data( 'position', myHeader.position() );
     myContentHeader.data( 'position', myContentHeader.position() );
 
-    $(window).scroll(scrollFixedTopHandler);
+    $(window).scroll(scrollHandler);
 
     $('.end_of_media').bind('inview', function(event, visible) {
       if (visible) {

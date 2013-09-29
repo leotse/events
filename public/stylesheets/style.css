@@ -225,21 +225,88 @@ h5 {
 h6 {
   font-size: 16px;
 }
+/* Fade sets */
+.fade1 {
+  opacity: 0;
+  /* make things invisible upon start */
+
+  -webkit-animation: fadeIn ease-in 1;
+  /* call our keyframe named fadeIn, use animattion ease-in and repeat it only 1 time */
+
+  -moz-animation: fadeIn ease-in 1;
+  animation: fadeIn ease-in 1;
+  -webkit-animation-fill-mode: forwards;
+  /* this makes sure that after animation is done we remain at the last keyframe value (opacity: 1)*/
+
+  -moz-animation-fill-mode: forwards;
+  animation-fill-mode: forwards;
+  -webkit-animation-duration: 1s;
+  -moz-animation-duration: 1s;
+  animation-duration: 1s;
+  -webkit-animation-delay: 0.2s;
+  -moz-animation-delay: 0.2s;
+  animation-delay: 0.2s;
+}
+.fade2 {
+  opacity: 0;
+  /* make things invisible upon start */
+
+  -webkit-animation: fadeIn ease-in 1;
+  /* call our keyframe named fadeIn, use animattion ease-in and repeat it only 1 time */
+
+  -moz-animation: fadeIn ease-in 1;
+  animation: fadeIn ease-in 1;
+  -webkit-animation-fill-mode: forwards;
+  /* this makes sure that after animation is done we remain at the last keyframe value (opacity: 1)*/
+
+  -moz-animation-fill-mode: forwards;
+  animation-fill-mode: forwards;
+  -webkit-animation-duration: 1s;
+  -moz-animation-duration: 1s;
+  animation-duration: 1s;
+  -webkit-animation-delay: 0.4s;
+  -moz-animation-delay: 0.4s;
+  animation-delay: 0.4s;
+}
+.fade3 {
+  opacity: 0;
+  /* make things invisible upon start */
+
+  -webkit-animation: fadeIn ease-in 1;
+  /* call our keyframe named fadeIn, use animattion ease-in and repeat it only 1 time */
+
+  -moz-animation: fadeIn ease-in 1;
+  animation: fadeIn ease-in 1;
+  -webkit-animation-fill-mode: forwards;
+  /* this makes sure that after animation is done we remain at the last keyframe value (opacity: 1)*/
+
+  -moz-animation-fill-mode: forwards;
+  animation-fill-mode: forwards;
+  -webkit-animation-duration: 1s;
+  -moz-animation-duration: 1s;
+  animation-duration: 1s;
+  -webkit-animation-delay: 0.6s;
+  -moz-animation-delay: 0.6s;
+  animation-delay: 0.6s;
+}
 /* Global Header */
 header {
   background: #fff;
+  padding-left: 40px;
   -webkit-box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.25);
   -moz-box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.25);
   box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.25);
-  text-align: center;
   vertical-align: middle;
   height: 65px;
+}
+header h1 {
+  line-height: 125%;
 }
 header h1.logo a {
   font-size: 0;
 }
 header h1.logo a img {
-  width: 350px;
+  width: 210px;
 }
 h1.title {
   float: left;
@@ -254,8 +321,7 @@ img.background_img {
   z-index: -999;
 }
 #main_content {
-  margin: 0 auto;
-  width: 95%;
+  margin: 0 50px;
 }
 a {
   color: #00B7FF;
@@ -370,10 +436,9 @@ form.event ul {
 }
 .event span.dates,
 .event span.tag {
-  font-style: oblique;
   font-weight: 300;
   font-size: 18px;
-  color: #444;
+  color: #666;
 }
 /* Content Header */
 .content_header {
@@ -432,89 +497,45 @@ form.event ul {
   list-style: none;
   text-align: center;
 }
+.media figure {
+  overflow: hidden;
+  width: 150px;
+  height: 150px;
+  display: inline-block;
+}
 .media img {
   margin: 0px;
   padding: 0;
-  -webkit-transition: all 0.2s ease-out;
-  -moz-transition: all 0.2s ease-out;
-  -o-transition: all 0.2s ease-out;
-  transition: all 0.2s ease-out;
+  -webkit-transition: all 0.3s ease-out;
+  -moz-transition: all 0.3s ease-out;
+  -o-transition: all 0.3s ease-out;
+  transition: all 0.3s ease-out;
   width: 150px;
   height: 150px;
-}
-.fade1 {
-  opacity: 0;
-  /* make things invisible upon start */
-
-  -webkit-animation: fadeIn ease-in 1;
-  /* call our keyframe named fadeIn, use animattion ease-in and repeat it only 1 time */
-
-  -moz-animation: fadeIn ease-in 1;
-  animation: fadeIn ease-in 1;
-  -webkit-animation-fill-mode: forwards;
-  /* this makes sure that after animation is done we remain at the last keyframe value (opacity: 1)*/
-
-  -moz-animation-fill-mode: forwards;
-  animation-fill-mode: forwards;
-  -webkit-animation-duration: 1s;
-  -moz-animation-duration: 1s;
-  animation-duration: 1s;
-  -webkit-animation-delay: 0.2s;
-  -moz-animation-delay: 0.2s;
-  animation-delay: 0.2s;
-}
-.fade2 {
-  opacity: 0;
-  /* make things invisible upon start */
-
-  -webkit-animation: fadeIn ease-in 1;
-  /* call our keyframe named fadeIn, use animattion ease-in and repeat it only 1 time */
-
-  -moz-animation: fadeIn ease-in 1;
-  animation: fadeIn ease-in 1;
-  -webkit-animation-fill-mode: forwards;
-  /* this makes sure that after animation is done we remain at the last keyframe value (opacity: 1)*/
-
-  -moz-animation-fill-mode: forwards;
-  animation-fill-mode: forwards;
-  -webkit-animation-duration: 1s;
-  -moz-animation-duration: 1s;
-  animation-duration: 1s;
-  -webkit-animation-delay: 0.4s;
-  -moz-animation-delay: 0.4s;
-  animation-delay: 0.4s;
-}
-.fade3 {
-  opacity: 0;
-  /* make things invisible upon start */
-
-  -webkit-animation: fadeIn ease-in 1;
-  /* call our keyframe named fadeIn, use animattion ease-in and repeat it only 1 time */
-
-  -moz-animation: fadeIn ease-in 1;
-  animation: fadeIn ease-in 1;
-  -webkit-animation-fill-mode: forwards;
-  /* this makes sure that after animation is done we remain at the last keyframe value (opacity: 1)*/
-
-  -moz-animation-fill-mode: forwards;
-  animation-fill-mode: forwards;
-  -webkit-animation-duration: 1s;
-  -moz-animation-duration: 1s;
-  animation-duration: 1s;
-  -webkit-animation-delay: 0.6s;
-  -moz-animation-delay: 0.6s;
-  animation-delay: 0.6s;
+  overflow: hidden;
 }
 .media img:hover {
+  -webkit-transform: scale(1.02);
+  -moz-transform: scale(1.02);
+  -o-transform: scale(1.02);
+  -ms-transform: scale(1.02);
+  transform: scale(1.02);
+}
+.media figure:hover {
   cursor: pointer;
   background-color: #0073B2;
   -webkit-box-shadow: 1px 0px 20px rgba(0, 0, 0, 0.7);
   -moz-box-shadow: 1px 0px 20px rgba(0, 0, 0, 0.7);
   box-shadow: 1px 0px 20px rgba(0, 0, 0, 0.7);
-  -webkit-transition: all 0.2s ease-in;
-  -moz-transition: all 0.2s ease-in;
-  -o-transition: all 0.2s ease-in;
-  transition: all 0.2s ease-in;
+  -webkit-filter: brightness(120%);
+  -moz-filter: brightness(120%);
+  -o-filter: brightness(120%);
+  -ms-filter: brightness(120%);
+  filter: brightness(120%);
+  -webkit-transition: all 0.3s ease-in;
+  -moz-transition: all 0.3s ease-in;
+  -o-transition: all 0.3s ease-in;
+  transition: all 0.3s ease-in;
   /*margin-top: -1px;
   margin-left: 0px;
   margin-right: 0px;
