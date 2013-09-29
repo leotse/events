@@ -4,6 +4,8 @@ function initAlbum(eventId) {
   var cachedList = []; // not in use yet
   var set = false;
 
+  var myHeader, myContentHeader;
+
   function refresh(data) {
     var $medialist = $(".media");
     var length = data.length; 
@@ -92,8 +94,13 @@ function initAlbum(eventId) {
     return undefined;
   }
 
+  function clickToClose(e) {
+    $(".overlay").hide();
+    $("body").attr("style", "overflow: auto");
+  }
+
   function mediaDetailsHandler(e) {
-    $(".overlay").show();
+    $(".overlay").show();    
     $("body").attr("style", "overflow: hidden");
     console.log(this);
 
@@ -101,30 +108,35 @@ function initAlbum(eventId) {
 
     if(id != "") {
       console.log("here");
-      var media = findMediaItemById(id);
-      $(".media_details").append("<div class='fade1'>"+media.caption.text+"</div>");
-      $(".media_details").append("<div class='fade2'>By: "+media.user.full_name+"</div>");
-      $(".media_details").append("<div class='fade3'>Date: "+media.created_time+"</div>");
-      $(".media_popup img").attr("src", media.images.standard_resolution.url);
+      var media = findMediaItemById(id);      
+      var created = media.created_time;
+      $(".media_details").html("");
+      $(".media_details").append("<div class='details_desc fade1'>"+media.caption.text+"</div>");
+      $(".media_details").append("<img class='details_author_img fade2' src='"+media.user.profile_picture+"' />");
+      $(".media_details").append("<div class='details_author fade2'>By: "+media.user.full_name+"</div>");
+      $(".media_details").append("<div class='details_created fade3'>Date: "+created+"</div>");
+      $(".media_img_container img").attr("src", media.images.standard_resolution.url);
+      $(".media_img_container img").attr("class", "fade1");
+    }
+  }
+
+  function scrollFixedTopHandler() {
+    var hPos = myContentHeader.data('position'), scroll = getScroll();
+    if ( hPos.top < scroll.top ) {
+      myContentHeader.addClass('fixed');
+    }
+    else {
+      myContentHeader.removeClass('fixed');
     }
   }
 
   $(document).ready(function() {
-    var myHeader = $('header');
-    var myContentHeader = $('.content_header');
-
+    myHeader = $('header');
+    myContentHeader = $('.content_header');
     myHeader.data( 'position', myHeader.position() );
     myContentHeader.data( 'position', myContentHeader.position() );
 
-    $(window).scroll(function() {
-      hPos = myContentHeader.data('position'), scroll = getScroll();
-      if ( hPos.top < scroll.top ) {
-        myContentHeader.addClass('fixed');
-      }
-      else {
-        myContentHeader.removeClass('fixed');
-      }
-    });
+    $(window).scroll(scrollFixedTopHandler);
 
     $('.end_of_media').bind('inview', function(event, visible) {
       if (visible) {
@@ -134,6 +146,6 @@ function initAlbum(eventId) {
     lazyload();
 
     $('#action_slideshow').click(slideshowHandler);
-
+    $(".overlay").click(clickToClose);
   });
 }

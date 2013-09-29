@@ -9,10 +9,10 @@ block content
   div.content_header
 
     //- title
-    h1.title=event.name     
+    h1.title.fade1=event.name     
 
     //- action menu
-    div.action_menu
+    div.action_menu.fade2
       ul
         li 
           a(id="action_download", href="/events/#{event._id}/download") Download
@@ -20,21 +20,20 @@ block content
           a(id="action_slideshow", href="#slideshow") Slideshow
 
   //- event details
-  div.event
+  div.event.fade1
     //-span.title= 
     span.desc= event.desc
     span.dates #{event.start.getFullYear()}.#{event.start.getMonth()}.#{event.start.getDate()} ~ #{event.end.getFullYear()}.#{event.end.getMonth()}.#{event.end.getDate()}
     span.tag &#35;#{event.tag}    
 
   div.overlay
-    //- slideshow layer
-    //-div.slideshow
-
     //- media details popup
     div.media_popup
-      img
+      div.media_img_container
+        img
+      div.overlay_close
       div.media_details
-        div.overlay_close X
+        
 
   //- event media
   div.media
