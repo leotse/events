@@ -101,12 +101,12 @@ function initAlbum(eventId) {
   }
 
   function clickToClose(e) {
-    $(".overlay").hide();
+    $(".overlay").removeClass("active");
     $("body").attr("style", "overflow: auto");
   }
 
   function mediaDetailsHandler(e) {
-    $(".overlay").show();    
+    $(".overlay").addClass("active");    
     $("body").attr("style", "overflow: hidden");
     console.log(this);
 
@@ -130,10 +130,12 @@ function initAlbum(eventId) {
     if ( hPos.top < scroll.top ) {
       myContentHeader.addClass('fixed');
       $(".event").css("margin-top", "120px");
+      $("#action_scrolltop").addClass("active");
     }
     else {
       myContentHeader.removeClass('fixed');
       $(".event").css("margin-top", "0");
+      $("#action_scrolltop").removeClass("active");
     }    
   }
 

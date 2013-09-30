@@ -338,7 +338,7 @@ a:active {
 .action_menu {
   float: right;
   margin-left: 50px;
-  margin-right: 20px;
+  margin-right: 0;
   height: 100%;
   vertical-align: middle;
   padding: 32px 0;
@@ -353,13 +353,20 @@ a:active {
 .action_menu > ul > li > a {
   padding: 30px;
   font-size: 18px;
-}
-.action_menu > ul > li > a:hover {
-  background-color: #EEE;
+  color: rgba(0, 0, 0, 0);
   -webkit-transition: all 0.2s ease-out;
   -moz-transition: all 0.2s ease-out;
   -o-transition: all 0.2s ease-out;
   transition: all 0.2s ease-out;
+}
+.action_menu > ul > li > a:hover {
+  background-color: #EEE;
+  color: #00B7FF;
+  text-decoration: none;
+  -webkit-transition: all 0.2s ease-in;
+  -moz-transition: all 0.2s ease-in;
+  -o-transition: all 0.2s ease-in;
+  transition: all 0.2s ease-in;
 }
 .fixed > .action_menu > ul > li > a {
   border-left: solid 1px #EEE;
@@ -367,6 +374,50 @@ a:active {
 }
 .fixed > .action_menu > ul > li:last-child > a {
   border-right: solid 1px #EEE;
+}
+/* Action Icons */
+#action_download {
+  background: url(/images/icons/download.png) no-repeat center center;
+}
+#action_download:hover {
+  background: url(/images/icons/download.png) no-repeat center -90px, #eeeeee;
+}
+#action_slideshow {
+  background: url(/images/icons/slideshow.png) no-repeat center center;
+}
+#action_slideshow:hover {
+  background: url(/images/icons/slideshow.png) no-repeat center -90px, #eeeeee;
+}
+#action_scrolltop {
+  background: url(/images/icons/up.png) no-repeat center center, rgba(255, 255, 255, 0.2);
+  margin: 0;
+  color: rgba(0, 0, 0, 0);
+  -webkit-box-shadow: 0px 10px 20px rgba(255, 255, 255, 0.8);
+  -moz-box-shadow: 0px 10px 20px rgba(255, 255, 255, 0.8);
+  box-shadow: 0px 10px 20px rgba(255, 255, 255, 0.8);
+  position: fixed;
+  bottom: -128px;
+  left: 50%;
+  width: 64px;
+  height: 64px;
+  border-radius: 64px;
+  -webkit-transition: all 0.2s ease-out;
+  -moz-transition: all 0.2s ease-out;
+  -o-transition: all 0.2s ease-out;
+  transition: all 0.2s ease-out;
+}
+#action_scrolltop.active {
+  bottom: 0;
+}
+#action_scrolltop:hover {
+  background: url(/images/icons/up.png) no-repeat center center, rgba(255, 255, 255, 0.9);
+  -webkit-box-shadow: 0px 0px 20px #ffffff;
+  -moz-box-shadow: 0px 0px 20px #ffffff;
+  box-shadow: 0px 0px 20px #ffffff;
+  -webkit-transition: all 0.2s ease-in;
+  -moz-transition: all 0.2s ease-in;
+  -o-transition: all 0.2s ease-in;
+  transition: all 0.2s ease-in;
 }
 /* Register Form */
 form.register ul {
@@ -406,7 +457,9 @@ form.event ul {
 .events li {
   margin: 12px 0;
   padding: 20px;
-  box-shadow: 1px 1px 5px #AAA;
+  -webkit-box-shadow: 1px 1px 5px #aaaaaa;
+  -moz-box-shadow: 1px 1px 5px #aaaaaa;
+  box-shadow: 1px 1px 5px #aaaaaa;
 }
 .events li:hover {
   background: #EEE;
@@ -480,11 +533,12 @@ form.event ul {
   transition: opacity 0.2s ease-in;
 }
 .content_header.fixed h1.title {
-  margin-left: 36px;
+  margin-left: 50px;
   font-size: 32px;
 }
 .content_header.fixed .action_menu {
   padding: 24px 0;
+  margin-right: 50px;
 }
 .content_header.fixed .action_menu > ul > li > a {
   padding-top: 22px;
@@ -492,7 +546,7 @@ form.event ul {
 }
 /* Media List */
 .media {
-  margin: 0;
+  margin: 30px 0;
   padding: 0;
   list-style: none;
   text-align: center;
@@ -536,13 +590,9 @@ form.event ul {
   -moz-transition: all 0.3s ease-in;
   -o-transition: all 0.3s ease-in;
   transition: all 0.3s ease-in;
-  /*margin-top: -1px;
-  margin-left: 0px;
-  margin-right: 0px;
-  margin-bottom: 1px;
-/*  width: 160px;
-  height: 160px;*/
-
+}
+.end_of_media {
+  height: 30px;
 }
 /* overlay */
 .overlay {
@@ -552,8 +602,20 @@ form.event ul {
   width: 100%;
   height: 100%;
   z-index: 999999;
+  background: rgba(0, 0, 0, 0);
+  height: 0;
+  -webkit-transition: all 0.2s ease-in;
+  -moz-transition: all 0.2s ease-in;
+  -o-transition: all 0.2s ease-in;
+  transition: all 0.2s ease-in;
+}
+.overlay.active {
+  height: 100%;
+  -webkit-transition: all 0.2s ease-out;
+  -moz-transition: all 0.2s ease-out;
+  -o-transition: all 0.2s ease-out;
+  transition: all 0.2s ease-out;
   background: rgba(0, 0, 0, 0.9);
-  display: none;
 }
 .media_popup {
   color: #777;
@@ -562,10 +624,21 @@ form.event ul {
   width: 900px;
   position: absolute;
   left: 50%;
-  top: 50%;
+  top: -2000px;
   margin-left: -450px;
   margin-top: -306px;
   overflow: hidden;
+  -webkit-transition: all 0.2s ease-in;
+  -moz-transition: all 0.2s ease-in;
+  -o-transition: all 0.2s ease-in;
+  transition: all 0.2s ease-in;
+}
+.active .media_popup {
+  top: 50%;
+  -webkit-transition: all 0.2s ease-out;
+  -moz-transition: all 0.2s ease-out;
+  -o-transition: all 0.2s ease-out;
+  transition: all 0.2s ease-out;
 }
 .media_img_container {
   float: left;
