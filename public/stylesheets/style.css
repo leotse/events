@@ -317,7 +317,7 @@ img.background_img {
   top: 0;
   left: 0;
   width: 100%;
-  /*.blur(5px); .opacity(0.5);*/
+  height: 100%;
   z-index: -999;
 }
 #main_content {
@@ -603,11 +603,11 @@ form.event ul {
   height: 100%;
   z-index: 999999;
   background: rgba(0, 0, 0, 0);
-  height: 0;
   -webkit-transition: all 0.2s ease-in;
   -moz-transition: all 0.2s ease-in;
   -o-transition: all 0.2s ease-in;
   transition: all 0.2s ease-in;
+  display: none;
 }
 .overlay.active {
   height: 100%;
@@ -616,6 +616,7 @@ form.event ul {
   -o-transition: all 0.2s ease-out;
   transition: all 0.2s ease-out;
   background: rgba(0, 0, 0, 0.9);
+  display: inherit;
 }
 .media_popup {
   color: #777;
@@ -712,4 +713,14 @@ form.event ul {
   margin-left: -2px;
   margin-right: 6px;
   margin-bottom: 6px;
+}
+@media screen and (orientation: portrait) {
+  img.background_img {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: auto;
+    z-index: -999;
+  }
 }

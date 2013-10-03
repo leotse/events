@@ -1,11 +1,18 @@
-function initAlbum(eventId) {
+function initAlbum(eventId, pollInterval, slideInterval) {
 
   var maxId = "", minId = "";
   var cachedList = []; // cache of all the images loaded in view
   var newImages = []; // cache of all the new images in polling, but not loaded
   var lastScroll = 0; // for detecting scroll up or down
+  var slideCurrentIndex = 0;
+  var slideTimer;
 
   var myHeader, myContentHeader;
+
+  //var fxlist = ["bounce", "flip", "shake", "tada", "swing", "wobble", "pulse"]; // too goofy maybe not for wedding and for other event types
+  var fxlist = ["fadeInDown", "fadeIn", "fadeInLeft", "fade", "pulse"];
+  var fxoutlist = ["fadeOutDown", "fadeOut", "fadeOutLeft"];
+
 
   // refresh UI with the new data
   function refresh(data, prepend) {
@@ -60,7 +67,7 @@ function initAlbum(eventId) {
   function pollAgain() {
     setTimeout(function () {
       poll();
-    }, 1000); // to-do: set this to 15 min for production
+    }, pollInterval); // to-do: set this to 15 min for production
   };
 
   function getScroll () {
@@ -88,8 +95,33 @@ function initAlbum(eventId) {
   }
 
   function slideshowHandler(e) {
-    $(".overlay").show();
+    $(".overlay").addClass("active slideshow");
     $("body").attr("style", "overflow: hidden");
+    if(slideTimer !== null) { clearTimeout(slideTimer); }
+    slideNext();
+  }
+
+  function slideNext() {
+    // increment index or reset current index if already reached the end
+    if(++slideCurrentIndex === cachedList.length) {   
+      slideCurrentIndex = 0;
+    }
+    console.log(slideCurrentIndex);
+    var media = cachedList[slideCurrentIndex];
+    var created = media.created_time;
+    var fx = fxlist[slideCurrentIndex % fxlist.length];
+    // var fxout = fxoutlist[slideCurrentIndex % fxoutlist.length];
+    $(".media_details").html("");
+    $(".media_details").append("<div class='details_desc fade1'>"+media.caption.text+"</div>");
+    $(".media_details").append("<img class='details_author_img fade2' src='"+media.user.profile_picture+"' />");
+    $(".media_details").append("<div class='details_author fade2'>By: "+media.user.full_name+"</div>");
+    $(".media_details").append("<div class='details_created fade3'>Date: "+created+"</div>");
+    $(".media_img_container img").attr("src", media.images.standard_resolution.url);
+    $(".media_img_container img").removeClass(); // clear class
+    $(".media_img_container img").addClass('animated '+fx); // add animation class
+    
+    // recur slideNext    
+    slideTimer = setTimeout(slideNext, slideInterval); // to-do: set this to 15 min for production
   }
 
   function findMediaItemById(id) {
@@ -103,6 +135,10 @@ function initAlbum(eventId) {
   function clickToClose(e) {
     $(".overlay").removeClass("active");
     $("body").attr("style", "overflow: auto");
+    console.log(slideTimer);
+    if(slideTimer !== undefined) {       
+      clearTimeout(slideTimer); 
+    } // clear timers
   }
 
   function mediaDetailsHandler(e) {

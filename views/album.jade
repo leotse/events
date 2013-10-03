@@ -3,7 +3,7 @@ extends layout
 block content
 
   //- bg img
-  //-img(class="background_img", src="/images/background1.jpg")
+  img(class="background_img", src="/images/backgrounds/Blur-01.jpg")
 
   //- content header
   div.content_header
@@ -32,8 +32,7 @@ block content
       div.media_img_container
         img
       div.overlay_close
-      div.media_details
-        
+      div.media_details        
 
   //- event media
   div.media
@@ -43,8 +42,9 @@ block content
   a(id="action_scrolltop", href="#top") Top
 
 block scripts
+  link(rel='stylesheet', href='/stylesheets/animate.min.css')
   script(type='text/javascript', src='/javascripts/libs/jquery.inview.min.js')
   script(type='text/javascript', src='/javascripts/libs/jquery.viewport.mini.js')
   script(type='text/javascript', src='/javascripts/album.js')
   script.
-    initAlbum("#{event._id}");
+    initAlbum("#{event._id}", 1000, 15000);
