@@ -348,7 +348,7 @@ a:active {
 }
 .action_menu > ul > li {
   list-style: none;
-  display: inline;
+  display: inline-block;
 }
 .action_menu > ul > li > a {
   padding: 30px;
@@ -407,7 +407,7 @@ a:active {
   transition: all 0.2s ease-out;
 }
 #action_scrolltop.active {
-  bottom: 0;
+  bottom: 15px;
 }
 #action_scrolltop:hover {
   background: url(/images/icons/up.png) no-repeat center center, rgba(255, 255, 255, 0.9);
@@ -556,6 +556,7 @@ form.event ul {
   width: 150px;
   height: 150px;
   display: inline-block;
+  vertical-align: bottom;
 }
 .media img {
   margin: 0px;

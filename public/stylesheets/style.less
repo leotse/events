@@ -333,7 +333,7 @@ a:active { text-decoration: none; }
 /* Menus */
 .action_menu { float: right; margin-left: 50px; margin-right: 0; height: 100%; vertical-align: middle; padding: 32px 0; }
 .action_menu > ul {  margin-top: 1px; }
-.action_menu > ul > li { list-style: none; display: inline; }
+.action_menu > ul > li { list-style: none; display: inline-block; }
 .action_menu > ul > li > a { padding: 30px; font-size: 18px; color: rgba(0, 0, 0, 0); .transition(0.2s, ease-out); }
 .action_menu > ul > li > a:hover { background-color: #EEE;  color:#00B7FF; text-decoration: none; .transition(0.2s, ease-in); }
 
@@ -347,7 +347,7 @@ a:active { text-decoration: none; }
 #action_slideshow:hover { background: url(/images/icons/slideshow.png) no-repeat center -90px, #EEE; }
 
 #action_scrolltop { background: url(/images/icons/up.png) no-repeat center center, rgba(255, 255, 255, 0.2); margin: 0; color: rgba(0, 0, 0, 0); .box-shadow(0px 10px 20px rgba(255, 255, 255, 0.8)); position: fixed;  bottom: -128px; left: 50%; width: 64px; height: 64px; border-radius: 64px; .transition(0.2s, ease-out);  }
-#action_scrolltop.active { bottom: 0; }
+#action_scrolltop.active { bottom: 15px; }
 #action_scrolltop:hover {  background: url(/images/icons/up.png) no-repeat center center, rgba(255, 255, 255, 0.9); .box-shadow(0px 0px 20px #FFF); .transition(0.2s, ease-in); }
 
 
@@ -406,9 +406,10 @@ form.event ul { margin:0; padding:0; list-style:none; }
 }
 .media figure { 
   overflow: hidden;
-    width: 150px;
+  width: 150px;
   height: 150px;
   display: inline-block;
+  vertical-align: bottom;
 }
 .media img { 
   margin: 0px; 
