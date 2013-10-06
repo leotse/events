@@ -4,8 +4,9 @@ function initAlbum(eventId, pollInterval, slideInterval) {
   var cachedList = []; // cache of all the images loaded in view
   var newImages = []; // cache of all the new images in polling, but not loaded
   var lastScroll = 0; // for detecting scroll up or down
-  var slideCurrentIndex = 0;
-  var slideTimer;
+  var slideCurrentIndex = 0; // current slide img index in the case of a slideshow
+  var slideTimer; // slide timer object to loop through the images
+  var mediaIndex = 0; // current media item in the popup, not for a slideshow
 
   var myHeader, myContentHeader;
 
@@ -124,21 +125,53 @@ function initAlbum(eventId, pollInterval, slideInterval) {
     slideTimer = setTimeout(slideNext, slideInterval); // to-do: set this to 15 min for production
   }
 
+
+
   function findMediaItemById(id) {
     var l=cachedList.length;
     for(var i=0; i<l; i++) {
-      if(cachedList[i].id === id) return cachedList[i];
+      if(cachedList[i].id === id) return i;
     }
     return undefined;
   }
 
   function clickToClose(e) {
+    if($(e.target).parents(".action_next_prev_img").length) return;
+
     $(".overlay").removeClass("active");
     $("body").attr("style", "overflow: auto");
     console.log(slideTimer);
     if(slideTimer !== undefined) {       
       clearTimeout(slideTimer); 
     } // clear timers
+  }  
+
+  function loadMediaDetails(mediaIndex) {
+    if(mediaIndex !== undefined) {      
+      var media = cachedList[mediaIndex];
+      var created = media.created_time;
+      $(".media_details").html("");
+      $(".media_details").append("<div class='details_desc fade1'>"+media.caption.text+"</div>");
+      $(".media_details").append("<img class='details_author_img fade2' src='"+media.user.profile_picture+"' />");
+      $(".media_details").append("<div class='details_author fade2'>By: "+media.user.full_name+"</div>");
+      $(".media_details").append("<div class='details_created fade3'>Date: "+created+"</div>");
+      $(".media_img_container img").attr("src", media.images.standard_resolution.url);
+      $(".media_img_container img").attr("class", "fade1");
+    }
+  }
+
+  function nextPrevImgHandler(e) {
+    if($(this).attr("id") === "action_next_img") {
+      mediaIndex = ++mediaIndex === cachedList.length? 0: mediaIndex; 
+      console.log("next");
+    }
+    else {
+      mediaIndex = --mediaIndex === -1? cachedList.length - 1: mediaIndex; 
+      console.log("prev");
+    }
+
+    console.log(mediaIndex);
+    loadMediaDetails(mediaIndex);
   }
 
   function mediaDetailsHandler(e) {
@@ -149,15 +182,8 @@ function initAlbum(eventId, pollInterval, slideInterval) {
     var id = $(this).attr("rel");
 
     if(id !== "") {
-      var media = findMediaItemById(id);      
-      var created = media.created_time;
-      $(".media_details").html("");
-      $(".media_details").append("<div class='details_desc fade1'>"+media.caption.text+"</div>");
-      $(".media_details").append("<img class='details_author_img fade2' src='"+media.user.profile_picture+"' />");
-      $(".media_details").append("<div class='details_author fade2'>By: "+media.user.full_name+"</div>");
-      $(".media_details").append("<div class='details_created fade3'>Date: "+created+"</div>");
-      $(".media_img_container img").attr("src", media.images.standard_resolution.url);
-      $(".media_img_container img").attr("class", "fade1");
+      mediaIndex = findMediaItemById(id);
+      loadMediaDetails(mediaIndex);
     }
   }
 
@@ -191,6 +217,7 @@ function initAlbum(eventId, pollInterval, slideInterval) {
     lazyload();
 
     $('#action_slideshow').click(slideshowHandler);
+    $('.action_next_prev_img a').click(nextPrevImgHandler);
     $(".overlay").click(clickToClose);
   });
 }
