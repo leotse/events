@@ -469,19 +469,33 @@ overflow: hidden;
 .details_author_img { border-radius: 200px; width: 50px; float: left; }
 
 /* added by Leo */
-.action_menu > ul > li.remove.hidden { display: none; }
+.admin_menu > ul > li.remove { margin-right: 15px; }
+.admin_menu > ul > li.remove.hidden { display: none; }
+.admin_menu {
+  float: right;
+  margin-left: 50px;
+  margin-right: 0;
+  height: 100%;
+  vertical-align: middle;
+  padding: 32px 0;
+}
+.admin_menu > ul { margin-top: 1px; }
+.admin_menu > ul > li { list-style: none; display: inline-block; }
 .media img.selected {
   cursor: pointer;
   background-color: #0073B2;
-  .drop-shadow(1px, 1px, 20px, 0.8);
-  .transition(0s, ease-in);
+  -webkit-box-shadow: 1px 1px 20px rgba(0, 0, 0, 0.8);
+  -moz-box-shadow: 1px 1px 20px rgba(0, 0, 0, 0.8);
+  box-shadow: 1px 1px 20px rgba(0, 0, 0, 0.8);
+  -webkit-transition: all 0s ease-in;
+  -moz-transition: all 0s ease-in;
+  -o-transition: all 0s ease-in;
+  transition: all 0s ease-in;
   margin-top: -2px;
   margin-left: -2px;
   margin-right: 6px;
   margin-bottom: 6px;
 }
-
-
 @media screen and (orientation:portrait) {
   img.background_img { position: fixed; top: 0;left: 0; height: 100%; width: auto; z-index: -999; }
 }

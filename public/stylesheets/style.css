@@ -774,9 +774,18 @@ form.event ul {
   float: left;
 }
 /* added by Leo */
-.action_menu > ul > li.remove.hidden {
-  display: none;
+.admin_menu > ul > li.remove { margin-right: 15px; }
+.admin_menu > ul > li.remove.hidden { display: none; }
+.admin_menu {
+  float: right;
+  margin-left: 50px;
+  margin-right: 0;
+  height: 100%;
+  vertical-align: middle;
+  padding: 32px 0;
 }
+.admin_menu > ul { margin-top: 1px; }
+.admin_menu > ul > li { list-style: none; display: inline-block; }
 .media img.selected {
   cursor: pointer;
   background-color: #0073B2;

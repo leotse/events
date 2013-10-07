@@ -26,7 +26,7 @@ function adminInit(eventId, maxId) {
 
 		var $media = $('.media')
 		var $form = $('form');
-		var $remove = $('.action_menu .remove');
+		var $remove = $('.admin_menu .remove');
 
 		// select image on click
 		$media.on('click', 'img', function() {
