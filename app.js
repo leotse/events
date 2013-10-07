@@ -74,6 +74,7 @@ if ('development' == app.get('env')) {
 
 // general routes
 app.get(urls.HOME, ensureAuth(urls.LOGIN), routes.index);
+app.get(urls.LOGOUT, routes.logout);
 
 // event routes
 app.get('/events', ensureAuth(urls.LOGIN), eventRoutes.list);
