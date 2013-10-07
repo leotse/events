@@ -80,7 +80,8 @@ function adminInit(eventId, maxId) {
 			}
 
 			// if the beacon element is in view, load more items!
-			var $end = $('.end:in-viewport');
+			var $end = $('.end_of_media:in-viewport');
+			console.log($end.length);
 			if($end.length > 0) {
 				var url = ENDPOINT + maxId;
 				$.getJSON(url, function(items) {
