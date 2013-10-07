@@ -16,39 +16,13 @@ var Media = require('../models/medium');
 // list events
 routes.show = function(req, res) {
   var alias = req.params.alias;
-
-  async.auto({
-
-    // retrieve the alias
-    alias: function(done) {
-      Alias.findOne()
-        .where('alias', alias)
-        .populate('_event')
-        .exec(done);
-    },
-
-    // render the 20 newest item of this event
-    media: [ 'alias', function(done, results) {
-
-      var alias = results.alias;
-      if(!alias) return done(createError(404, 'album not found'));
-
-      var ev = alias._event;
-      var media = ev.media;
-      Media.find()
-        .where('id').in(media)
-        .sort('-id')
-        .limit(20)
-        .exec(done);
-    }]
-
-  }, function(err, results) {
-    if(err) return resh.send(res, err);
-    
-    var ev = results.alias._event;
-    var media = results.media;
-    res.render('album', { event: ev, media: media });
-  });
+  Alias.findOne()
+    .where('alias', alias)
+    .populate('_event')
+    .exec(function(err, alias) {
+      if(err) return resh.send(res, err);
+      res.render('album', { event: alias._event });
+    });
 };
 
 
