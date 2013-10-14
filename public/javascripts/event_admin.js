@@ -19,6 +19,7 @@ function adminInit(eventId, maxId) {
 
 		var items = [];
 		var hasMore = true;
+		var loading = false;
 
 		////////////////////
 		// Initialization //
@@ -70,6 +71,8 @@ function adminInit(eventId, maxId) {
 		/////////////
 
 		function loadMore() {
+			console.log(Date.now() + ' ' + loading);
+			if(loading) return; 
 
 			// if there aren't any more to load
 			// might as well remove the scroll and resize handlers
@@ -81,10 +84,16 @@ function adminInit(eventId, maxId) {
 
 			// if the beacon element is in view, load more items!
 			var $end = $('.end_of_media:in-viewport');
-			console.log($end.length);
 			if($end.length > 0) {
+
+				// prevents this from getting called multiple times
+				loading = true;
+
 				var url = ENDPOINT + maxId;
 				$.getJSON(url, function(items) {
+
+					// reset flag
+					loading = false;
 
 					// if there aren't any more items, we are at the end of the page!
 					if(items.length === 0) { 

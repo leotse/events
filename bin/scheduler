@@ -45,6 +45,7 @@ function processEvent(ev, processEventComplete) {
   console.log('processing event %s', ev.name);
 
   var client = new TagClient(ev._owner.accessToken, ev.tag);
+  var page = 0;
   var currentMedia = null;
 
   async.doWhilst(
@@ -65,19 +66,18 @@ function processEvent(ev, processEventComplete) {
           async.eachSeries(media.data, function(medium, mediumDone) {
             processMedium(ev, medium, mediumDone);
           }, done);
-        },
-
-        // finally save the event object, which gets modified by processMedium() by adding to the media array
-        function(done) { ev.save(done); }
+        }
 
       ], actionDone);
     },
 
     // the condition -
-    // since the instagram response is always in reverse chronological order, i.e. newest comes first
-    // if the oldest entry of the current instagram response is newer than the start date of the event
-    // then we want to download the next page of data!
-    function() { return client.url && currentMedia.startDate() > ev.start; },
+    // 1. more data is available from instagram
+    // 2. less than 10 pages downloaded
+    // 3. since the instagram response is always in reverse chronological order, i.e. newest first
+    //    if the oldest entry of the current instagram response is newer than the start date of the event
+    //    then we want to download the next page of data!
+    function() { return client.url && ++page < 10 && currentMedia.startDate() > ev.start; },
 
     // gets called when there's an error or when download is complete
     processEventComplete

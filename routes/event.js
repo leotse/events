@@ -199,8 +199,6 @@ routes.download = function(req, res) {
     var media = results.media;
     var urls = _.map(media, function(m) { return m.images.standard_resolution.url; });
 
-    console.log(urls);
-
     // let client know a zip file is coming down the stream
     res.header("Content-type", "application/zip");
     res.header("Content-Disposition", "attachment; filename=" + ev.name + ".zip");

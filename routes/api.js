@@ -69,8 +69,8 @@ api.listEvents = function(req, res) {
       
       resh.send(res, err, sorted);
 
-      // debug output
-      _.each(sorted, function(r) { console.log(r.id); });
+      // // debug output
+      // _.each(sorted, function(r) { console.log(r.id); });
   });
 };
 
