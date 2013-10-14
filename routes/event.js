@@ -173,19 +173,19 @@ routes.download = function(req, res) {
 
   async.auto({
 
+    event: function(done) { Event.findById(id, done); },
+
     // retrieve the event object
-    ev: function(done) { 
-      Event.findOne()
-        .where('_id', id)
-        .populate('_owner')
+    event_media: function(done) { 
+      EventMedia.find()
+        .where('_event', id)
+        .where('removed').ne(true)
         .exec(done);
     },
 
-    // retrieve the media for this event
-    media: ['ev', function(done, results) {
-      var ev = results.ev;
-      var ids = ev.media;
-
+    media: [ 'event_media', function(done, results) {
+      var eventMedia = results.event_media;
+      var ids = _.pluck(eventMedia, 'id');
       Media.find()
         .where('id').in(ids)
         .sort('-mediaId')
@@ -195,12 +195,14 @@ routes.download = function(req, res) {
   }, function(err, results) {
     if(err) return resh.send(res, err);
 
-    var ev = results.ev;
+    var ev = results.event;
     var media = results.media;
     var urls = _.map(media, function(m) { return m.images.standard_resolution.url; });
 
+    console.log(urls);
+
     // let client know a zip file is coming down the stream
-    res.header("Content-type", "application/octet-stream");
+    res.header("Content-type", "application/zip");
     res.header("Content-Disposition", "attachment; filename=" + ev.name + ".zip");
     res.header("Content-Transfer-Encoding", "binary");
 
