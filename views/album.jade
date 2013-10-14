@@ -23,7 +23,7 @@ block content
   div.event.fade1
     //-span.title= 
     span.desc= event.desc
-    span.dates #{event.start.getFullYear()}.#{event.start.getMonth()}.#{event.start.getDate()} ~ #{event.end.getFullYear()}.#{event.end.getMonth()}.#{event.end.getDate()}
+    span.dates #{event.start.getFullYear()}.#{event.start.getMonth() + 1}.#{event.start.getDate()} ~ #{event.end.getFullYear()}.#{event.end.getMonth() + 1}.#{event.end.getDate()}
     span.tag &#35;#{event.tag}    
 
   div.overlay
