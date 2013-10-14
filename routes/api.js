@@ -31,6 +31,7 @@ api.listEvents = function(req, res) {
     function(done) { 
       var query = EventMedia.find()
         .where('_event', _id)
+        .where('removed').ne(true)
         .sort('-mediaId')
         .limit(20);
 
