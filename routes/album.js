@@ -21,7 +21,7 @@ routes.show = function(req, res) {
     .populate('_event')
     .exec(function(err, alias) {
       if(err) return resh.send(res, err);
-      if(!alias) return resh.send(res, createError(404, 'album not found'));
+      if(!alias || !alias._event) return resh.send(res, createError(404, 'album not found'));
       res.render('album', { event: alias._event });
     });
 };

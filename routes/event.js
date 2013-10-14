@@ -10,6 +10,7 @@ var path = require('path');
 var async = require('async');
 var request = require('request');
 var archiver = require('archiver');
+var moment = require('moment');
 var resh = require('../helpers/res');
 var misc = require('../helpers/misc');
 var Event = require('../models/event');
@@ -27,6 +28,12 @@ routes.list = function(req, res) {
     .sort({ $natural: 1 })
     .exec(function(err, events) {
       if(err) return resh.send(res, err);
+
+      // format dates
+      _.each(events, function(ev) {
+        ev.niceStart = moment(ev.start).format('DD.MM.YYYY');
+        ev.niceEnd = moment(ev.end).format('DD.MM.YYYY');
+      })
       res.render('event/list', { events: events });
     });
 };
