@@ -14,6 +14,8 @@ function initAlbum(eventId, pollInterval, slideInterval) {
   var fxlist = ["fadeInDown", "fadeIn", "fadeInLeft", "fade", "pulse"];
   var fxoutlist = ["fadeOutDown", "fadeOut", "fadeOutLeft"];
 
+  // ensures no double lazy loading
+  var loading = false;
 
   // refresh UI with the new data
   function refresh(data, prepend) {
@@ -51,26 +53,6 @@ function initAlbum(eventId, pollInterval, slideInterval) {
     }
   }
 
-  function poll() {
-    $.ajax({
-      type: 'GET',
-      dataType: 'json',
-      url: '/api/events/' + eventId + '/media?from=' + maxId,
-      success: function (data) {
-        console.log(data);
-        // if there's data, refresh grid
-        if(data.length > 0) refresh(data);
-      },
-      complete: pollAgain
-    });
-  }
-
-  function pollAgain() {
-    setTimeout(function () {
-      poll();
-    }, pollInterval); // to-do: set this to 15 min for production
-  };
-
   function getScroll () {
     var b = document.body;
     var e = document.documentElement;
@@ -81,15 +63,20 @@ function initAlbum(eventId, pollInterval, slideInterval) {
   }
 
   function lazyload() {
+
+    // prevent loading same data multiple times
+    if(loading) { return; }
+
     //if ($(window).scrollTop() >= $(document).height() - $(window).height() - 10) {
+      loading = true;
       $.ajax({
         type: 'GET',
         dataType: 'json',
         url: '/api/events/' + eventId + '/media?max_id=' + maxId,
         success: function (data) {
-          console.log(data);
+          loading = false;
           // if there's data, refresh grid
-          if(data.length > 0) refresh(data);                    
+          if(data.length > 0) { refresh(data); }
         }
       });      
     //}
