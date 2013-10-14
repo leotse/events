@@ -89,9 +89,6 @@ function processMedium(ev, medium, complete) {
   var id = medium.data.id;
   var parsed = misc.parseMediaId(id);
 
-  // don't have to update anything if this media was removed
-  if(ev.removed.indexOf(id) >= 0) return setImmediate(complete);
-
   async.parallel([
 
     // create the event-media mapping

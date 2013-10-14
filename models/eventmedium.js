@@ -17,13 +17,16 @@ var schema = new Schema({
 
   // parsed id for better sorting support
   mediaId: { type: String },
-  machineId: { type: String }
+  machineId: { type: String },
+
+  removed: { type: Boolean, default: false }
 
 }, { strict: false, _id: false });
 
 // indexes definition
 schema.index({ _event: 1, id: 1 }, { unique: true });
 schema.index({ _event: 1, mediaId: 1, machineId: 1 }, { unique: true });
+schema.index({ _event: 1, removed: 1 });
 
 // generate media id and machine id before saving
 schema.pre('save', function(next) {
