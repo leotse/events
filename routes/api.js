@@ -33,7 +33,7 @@ api.listEvents = function(req, res) {
         .where('_event', _id)
         .where('removed').ne(true)
         .sort('-mediaId')
-        .limit(20);
+        .limit(500);
 
       // apply the min and max id conditions
       if(maxId) {
@@ -53,6 +53,7 @@ api.listEvents = function(req, res) {
     function(em, done) {
       var ids = _.pluck(em, 'id');
       Media.find()
+        .select('id created_time user images caption')
         .where('id').in(ids)
         .exec(done);
     }
