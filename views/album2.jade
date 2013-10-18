@@ -1,0 +1,37 @@
+extends layout
+
+block scripts
+  
+  //- javascripts!
+  script(type='text/javascript', src='/javascripts/libs/jquery.viewport.mini.js')
+  script(type='text/javascript', src='/javascripts/libs/idangerous.swiper-2.2.min.js')
+  script(type='text/javascript', src='/javascripts/album2.js')
+  script.
+    init('#{event._id}');
+
+  //- and additional stypes
+  link(rel='stylesheet', href='/stylesheets/idangerous.swiper.css')
+  link(rel='stylesheet', href='/stylesheets/album2.css')
+
+block content
+
+  //- content header
+  div.content_header
+    h1.title=event.name
+
+  //- event details
+  div.event
+    //-span.title= d
+    span.desc= event.desc
+    span.dates #{event.start.getFullYear()}.#{event.start.getMonth() + 1}.#{event.start.getDate()} ~ #{event.end.getFullYear()}.#{event.end.getMonth() + 1}.#{event.end.getDate()}
+    span.tag &#35;#{event.tag}    
+
+  //- pictures
+  div.media-ios
+  div.loadmore
+  div.dialog.hidden
+    div.device
+      a.arrow-left(href="#")
+      a.arrow-right(href="#")
+      div.swiper-container
+        div.swiper-wrapper

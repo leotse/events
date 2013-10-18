@@ -94,6 +94,7 @@ app.put('/events/:_id/alias', ensureAuth(urls.LOGIN), aliasRoutes.add);
 
 // public album routes
 app.get('/albums/:alias', albumRoutes.show);
+app.get('/albums2/:alias', albumRoutes.show2);
 
 // api routes
 app.get('/api/events/:_id/media', apiRoutes.listEvents);

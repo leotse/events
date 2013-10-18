@@ -26,6 +26,18 @@ routes.show = function(req, res) {
     });
 };
 
+routes.show2 = function(req, res) {
+  var alias = req.params.alias;
+  Alias.findOne()
+    .where('alias', alias)
+    .populate('_event')
+    .exec(function(err, alias) {
+      if(err) return resh.send(res, err);
+      if(!alias || !alias._event) return resh.send(res, createError(404, 'album not found'));
+      res.render('album2', { event: alias._event });
+    });
+};
+
 
 /////////////
 // Helpers //
