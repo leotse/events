@@ -1,4 +1,4 @@
-function initAlbum(eventId, pollInterval, slideInterval) {
+function initAlbum(eventId, pollInterval, slideInterval, debugMode) {
 
   var maxId = "", minId = "";
   var cachedList = []; // cache of all the images loaded in view
@@ -94,20 +94,24 @@ function initAlbum(eventId, pollInterval, slideInterval) {
     if(++slideCurrentIndex === cachedList.length) {   
       slideCurrentIndex = 0;
     }
-    console.log(slideCurrentIndex);
+    if(debugMode) console.log(slideCurrentIndex);
     var media = cachedList[slideCurrentIndex];
-    var created = media.created_time;
+    var created = moment.unix(media.created_time);
     var fx = fxlist[slideCurrentIndex % fxlist.length];
     // var fxout = fxoutlist[slideCurrentIndex % fxoutlist.length];
     $(".media_details").html("");
+    $(".media_details img").show();
     $(".media_details").append("<div class='details_desc fade1'>"+media.caption.text+"</div>");
     $(".media_details").append("<img class='details_author_img fade2' src='"+media.user.profile_picture+"' />");
     $(".media_details").append("<div class='details_author fade2'>By: "+media.user.full_name+"</div>");
-    $(".media_details").append("<div class='details_created fade3'>Date: "+created+"</div>");
+    $(".media_details").append("<div class='details_created fade3'>Date: "+(created.isBefore(new Date(), "day")? created.format("YYYY-MM-DD"): created.fromNow())+"</div>");
     $(".media_img_container img").attr("src", media.images.standard_resolution.url);
     $(".media_img_container img").removeClass(); // clear class
     $(".media_img_container img").addClass('animated '+fx); // add animation class
     
+    $(".media_details img").error(function () { 
+        $(this).hide();
+    });
     // recur slideNext    
     slideTimer = setTimeout(slideNext, slideInterval); // to-do: set this to 15 min for production
   }
@@ -127,7 +131,7 @@ function initAlbum(eventId, pollInterval, slideInterval) {
 
     $(".overlay").removeClass("active");
     $("body").attr("style", "overflow: auto");
-    console.log(slideTimer);
+    if(debugMode) console.log(slideTimer);
     if(slideTimer !== undefined) {       
       clearTimeout(slideTimer); 
     } // clear timers
@@ -136,35 +140,39 @@ function initAlbum(eventId, pollInterval, slideInterval) {
   function loadMediaDetails(mediaIndex) {
     if(mediaIndex !== undefined) {      
       var media = cachedList[mediaIndex];
-      var created = media.created_time;
+      var created = moment.unix(media.created_time);
       $(".media_details").html("");
+      $(".media_details img").show();
       $(".media_details").append("<div class='details_desc fade1'>"+media.caption.text+"</div>");
       $(".media_details").append("<img class='details_author_img fade2' src='"+media.user.profile_picture+"' />");
       $(".media_details").append("<div class='details_author fade2'>By: "+media.user.full_name+"</div>");
-      $(".media_details").append("<div class='details_created fade3'>Date: "+created+"</div>");
+      $(".media_details").append("<div class='details_created fade3'>Date: "+(created.isBefore(new Date(), "day")? created.format("YYYY-MM-DD"): created.fromNow())+"</div>");
       $(".media_img_container img").attr("src", media.images.standard_resolution.url);
       $(".media_img_container img").attr("class", "fade1");
+      $(".media_details img").error(function () { 
+          $(this).hide();
+      });
     }
   }
 
   function nextPrevImgHandler(e) {
     if($(this).attr("id") === "action_next_img") {
       mediaIndex = ++mediaIndex === cachedList.length? 0: mediaIndex; 
-      console.log("next");
+      if(debugMode) console.log("next");
     }
     else {
       mediaIndex = --mediaIndex === -1? cachedList.length - 1: mediaIndex; 
-      console.log("prev");
+      if(debugMode) console.log("prev");
     }
 
-    console.log(mediaIndex);
+    if(debugMode) console.log(mediaIndex);
     loadMediaDetails(mediaIndex);
   }
 
   function mediaDetailsHandler(e) {
     $(".overlay").addClass("active");    
     $("body").attr("style", "overflow: hidden");
-    console.log(this);
+    if(debugMode) console.log(this);
 
     var id = $(this).attr("rel");
 
