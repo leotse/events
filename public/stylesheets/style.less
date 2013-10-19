@@ -231,6 +231,7 @@ time, mark, audio, video {
 }
 body {
     line-height:1;
+    -webkit-overflow-scrolling:touch;
 }
 article,aside,details,figcaption,figure,
 footer,header,hgroup,menu,nav,section {
@@ -354,11 +355,11 @@ a:active { text-decoration: none; }
 .action_next_prev_img { position: absolute; left: 10px; top: 0; width: 592px; }
 .media_img_container:hover { .brightness(80%); }
 
-#action_prev_img { float: left; font-size: 0; background: url(/images/icons/left.png) no-repeat -32px center; width: 32px; height: 612px; .transition(0.2s, ease-in); .opacity(0.6);}
+#action_prev_img { float: left; font-size: 0; background: url(/images/icons/left.png) no-repeat -32px center; height: 612px; .transition(0.2s, ease-in); .opacity(0.6); width: 50%; }
 .media_img_container:hover #action_prev_img { background: url(/images/icons/left.png) no-repeat left center; .transition(0.2s, ease-out);}
 #action_prev_img:hover { .opacity(1); }
 
-#action_next_img { float: right; font-size: 0; background: url(/images/icons/right.png) no-repeat 32px center; width: 32px; height: 612px; .transition(0.2s, ease-in); .opacity(0.6);}
+#action_next_img { float: right; font-size: 0; background: url(/images/icons/right.png) no-repeat 322px center; height: 612px; .transition(0.2s, ease-in); .opacity(0.6); width: 50%; }
 .media_img_container:hover #action_next_img { background: url(/images/icons/right.png) no-repeat right center; .transition(0.2s, ease-out);}
 #action_next_img:hover { .opacity(1); }
 
@@ -425,13 +426,13 @@ form.event ul { margin:0; padding:0; list-style:none; }
 .media img { 
   margin: 0px; 
   padding:0;  
-  .transition(0.3s, ease-out);
+  /*.transition(0.3s, ease-out);*/
   width: 150px;
   height: 150px;
   overflow: hidden;
 }
-.media img:hover {   .transform(scale(1.02)); }
-.media figure:hover {
+.media img:active, .media img:hover {   .transform(scale(1.02)); }
+.media figure:active, .media figure:hover {
   cursor: pointer;
   background-color: #0073B2;
   .drop-shadow(1px, 0px, 20px, 0.7);
@@ -442,9 +443,9 @@ form.event ul { margin:0; padding:0; list-style:none; }
 
 /* overlay */
 .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 999999; background: rgba(0, 0, 0, 0); .transition(0.2s, ease-in); display: none; }
-.overlay.active { height: 100%; .transition(0.2s, ease-out); background: rgba(0, 0, 0, 0.9); display: inherit;}
+.overlay.active { height: 100%; .transition(0.2s, ease-out); background: rgba(255, 255, 255, 0.9); display: inherit;}
 .media_popup {color: #777;
-background: #000;
+background: #FFE7D7;
 height: 612px;
 width: 900px;
 position: absolute;
@@ -457,14 +458,14 @@ overflow: hidden;
 }
 .active .media_popup { top: 50%; .transition(0.2s, ease-out); }
 
-.media_img_container { float: left;}
+.media_img_container { float: left; width: 612px; overflow: hidden;}
 .media_details { margin: 15px 15px 15px 640px; overflow-x: hidden; overflow-y: auto; }
 .media_details div { margin: 10px 0; font-weight: 300; }
 
 .overlay_close { height: 20px; text-align: right; margin: 10px; background: url(data:image/gif;base64,R0lGODlhFAAUAJEAAE1NTf///////wAAACH5BAEHAAIALAAAAAAUABQAAAIzBISpK+YMm5Enpodw1HlCfnkKOIqU1VXk55goVb2hi7Y0q95lfG70uurNaqLgTviyyUoFADs=) no-repeat right center; .opacity(0.5); .transition(0.1s, ease-in);}
 .overlay_close:hover { cursor: pointer; .opacity(1); .transition(0.1s, ease-in); }
 
-.media_details > .details_desc { color: #EEE; margin-bottom: 30px; }
+.media_details > .details_desc { color: #222; margin-bottom: 30px; }
 .media_details > .details_author, .media_details > .details_created { margin-left: 70px; }
 .details_author_img { border-radius: 200px; width: 50px; float: left; }
 
@@ -496,6 +497,40 @@ overflow: hidden;
   margin-right: 6px;
   margin-bottom: 6px;
 }
+
+/* SWIPE */
+/*.swipe {
+  overflow: hidden;
+  visibility: hidden;
+  position: relative;
+}
+.swipe-wrap {
+  overflow: hidden;
+  position: relative;
+}
+.swipe-wrap > div {
+  float:left;
+  width: 612px;
+  position: relative;
+}*/
+
+/*#swipeview-slider > div {
+  position:relative;
+  display:-webkit-box;
+  -webkit-box-orient:vertical;
+  -webkit-box-pack:center;
+  -webkit-box-align:center;
+  overflow:hidden;
+}*/
+
+/*#swipeview-slider span {
+  -webkit-box-sizing:border-box;
+  display:block;
+  text-align:center;
+  font-size:1.4em;
+  padding:0 20px;
+}*/
+
 @media screen and (orientation:portrait) {
   img.background_img { position: fixed; top: 0;left: 0; height: 100%; width: auto; z-index: -999; }
 }

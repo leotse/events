@@ -28,14 +28,15 @@ block content
 
   div.overlay
     //- media details popup
-    div.media_popup
-      div.media_img_container
-        img
-        div.action_next_prev_img
-          a(id="action_prev_img", href="#prev_img") Prev
-          a(id="action_next_img", href="#next_img") Next
-      div.overlay_close
-      div.media_details        
+    div(id="media_swipe_wrapper", class="media_popup")
+      span
+        div.media_img_container
+          img
+          div.action_next_prev_img
+            a(id="action_prev_img", href="#prev_img") Prev
+            a(id="action_next_img", href="#next_img") Next
+        div.overlay_close
+        div.media_details        
 
   //- event media
   div.media
@@ -49,6 +50,7 @@ block scripts
   script(type='text/javascript', src='/javascripts/libs/jquery.inview.min.js')
   script(type='text/javascript', src='/javascripts/libs/jquery.viewport.mini.js')
   script(type='text/javascript', src='/javascripts/libs/moment.min.js')
+  script(type='text/javascript', src='/javascripts/libs/swipeview.js')
   script(type='text/javascript', src='/javascripts/album.js')
   script.
-    initAlbum("#{event._id}", 1000, 5000);
+    initAlbum("#{event._id}", 1000, 6000);

@@ -113,6 +113,7 @@ video {
 }
 body {
   line-height: 1;
+  -webkit-overflow-scrolling: touch;
 }
 article,
 aside,
@@ -436,7 +437,6 @@ a:active {
   float: left;
   font-size: 0;
   background: url(/images/icons/left.png) no-repeat -32px center;
-  width: 32px;
   height: 612px;
   -webkit-transition: all 0.2s ease-in;
   -moz-transition: all 0.2s ease-in;
@@ -448,6 +448,7 @@ a:active {
   opacity: 0.6;
   -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=60);
   filter: alpha(opacity=60);
+  width: 50%;
 }
 .media_img_container:hover #action_prev_img {
   background: url(/images/icons/left.png) no-repeat left center;
@@ -467,8 +468,7 @@ a:active {
 #action_next_img {
   float: right;
   font-size: 0;
-  background: url(/images/icons/right.png) no-repeat 32px center;
-  width: 32px;
+  background: url(/images/icons/right.png) no-repeat 322px center;
   height: 612px;
   -webkit-transition: all 0.2s ease-in;
   -moz-transition: all 0.2s ease-in;
@@ -480,6 +480,7 @@ a:active {
   opacity: 0.6;
   -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=60);
   filter: alpha(opacity=60);
+  width: 50%;
 }
 .media_img_container:hover #action_next_img {
   background: url(/images/icons/right.png) no-repeat right center;
@@ -638,14 +639,13 @@ form.event ul {
 .media img {
   margin: 0px;
   padding: 0;
-  -webkit-transition: all 0.3s ease-out;
-  -moz-transition: all 0.3s ease-out;
-  -o-transition: all 0.3s ease-out;
-  transition: all 0.3s ease-out;
+  /*.transition(0.3s, ease-out);*/
+
   width: 150px;
   height: 150px;
   overflow: hidden;
 }
+.media img:active,
 .media img:hover {
   -webkit-transform: scale(1.02);
   -moz-transform: scale(1.02);
@@ -653,6 +653,7 @@ form.event ul {
   -ms-transform: scale(1.02);
   transform: scale(1.02);
 }
+.media figure:active,
 .media figure:hover {
   cursor: pointer;
   background-color: #0073B2;
@@ -693,12 +694,12 @@ form.event ul {
   -moz-transition: all 0.2s ease-out;
   -o-transition: all 0.2s ease-out;
   transition: all 0.2s ease-out;
-  background: rgba(0, 0, 0, 0.9);
+  background: rgba(255, 255, 255, 0.9);
   display: inherit;
 }
 .media_popup {
   color: #777;
-  background: #000;
+  background: #FFE7D7;
   height: 612px;
   width: 900px;
   position: absolute;
@@ -721,6 +722,8 @@ form.event ul {
 }
 .media_img_container {
   float: left;
+  width: 612px;
+  overflow: hidden;
 }
 .media_details {
   margin: 15px 15px 15px 640px;
@@ -761,7 +764,7 @@ form.event ul {
   transition: all 0.1s ease-in;
 }
 .media_details > .details_desc {
-  color: #EEE;
+  color: #222;
   margin-bottom: 30px;
 }
 .media_details > .details_author,
@@ -774,8 +777,12 @@ form.event ul {
   float: left;
 }
 /* added by Leo */
-.admin_menu > ul > li.remove { margin-right: 15px; }
-.admin_menu > ul > li.remove.hidden { display: none; }
+.admin_menu > ul > li.remove {
+  margin-right: 15px;
+}
+.admin_menu > ul > li.remove.hidden {
+  display: none;
+}
 .admin_menu {
   float: right;
   margin-left: 50px;
@@ -784,8 +791,13 @@ form.event ul {
   vertical-align: middle;
   padding: 32px 0;
 }
-.admin_menu > ul { margin-top: 1px; }
-.admin_menu > ul > li { list-style: none; display: inline-block; }
+.admin_menu > ul {
+  margin-top: 1px;
+}
+.admin_menu > ul > li {
+  list-style: none;
+  display: inline-block;
+}
 .media img.selected {
   cursor: pointer;
   background-color: #0073B2;
@@ -801,6 +813,36 @@ form.event ul {
   margin-right: 6px;
   margin-bottom: 6px;
 }
+/* SWIPE */
+/*.swipe {
+  overflow: hidden;
+  visibility: hidden;
+  position: relative;
+}
+.swipe-wrap {
+  overflow: hidden;
+  position: relative;
+}
+.swipe-wrap > div {
+  float:left;
+  width: 612px;
+  position: relative;
+}*/
+/*#swipeview-slider > div {
+  position:relative;
+  display:-webkit-box;
+  -webkit-box-orient:vertical;
+  -webkit-box-pack:center;
+  -webkit-box-align:center;
+  overflow:hidden;
+}*/
+/*#swipeview-slider span {
+  -webkit-box-sizing:border-box;
+  display:block;
+  text-align:center;
+  font-size:1.4em;
+  padding:0 20px;
+}*/
 @media screen and (orientation: portrait) {
   img.background_img {
     position: fixed;
