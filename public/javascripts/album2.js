@@ -17,6 +17,7 @@ function init(eventId, maxId) {
 		// Fields //
 		////////////
 
+		var mediaList = [];
 		var hasMore = true;
 		var loading = false;
 
@@ -33,24 +34,13 @@ function init(eventId, maxId) {
 		$(window).resize(loadMore);
 
 		// listen for click on picture
-		$media.on('click', 'img', function() { $dialog.removeClass('hidden'); });
+		$media.on('click', 'img', showDialog);
 		// $dialog.on('click', '', function() { $dialog.addClass('hidden'); });
 
 		// init swiper
-		var mySwiper = new Swiper('.swiper-container',{
-			loop:true,
-			grabCursor: true,
-			paginationClickable: true
-		});
-
-		$('.arrow-left').on('click', function(e) {
-			e.preventDefault()
-			mySwiper.swipePrev()
-		});
-
-		$('.arrow-right').on('click', function(e) {
-			e.preventDefault()
-			mySwiper.swipeNext()
+		var swiper = new Swiper('.swiper-container',{
+			loop: true,
+			grabCursor: true
 		});
 
 		// init lazy loading
@@ -100,19 +90,17 @@ function init(eventId, maxId) {
 					// add the items to the list
 					var i, item, length = items.length;
 					var img, imgs = [];
-					var sitem, sitems = [];
 					for(i = 0; i < items.length; i++) {
 						item = items[i];
-						img = createImg(item);
+						img = createImg(item, i);
 						imgs.push(img);
-						sitem = createSliderItem(item);
-						sitems.push(sitem);
 					}
 
 					// add to dom!
 					$media.append(imgs);
-					$swiper.append(sitems);
-					mySwiper.reInit();
+
+					// update internal media list
+					mediaList = mediaList.concat(items);
 
 					// and 'recursively' check again
 					setTimeout(loadMore, 250);
@@ -120,16 +108,28 @@ function init(eventId, maxId) {
 			}
 		}
 
-		function createImg(media) {
+		function createImg(media, index) {
 			var id = media.id;
 			var url = media.images.thumbnail.url;
-			return "<img src='" + url + "' id='" + id + "' />";
+			return "<img src='" + url + "' id='" + id + "' index='" + index + "' />";
 		}
 
-		function createSliderItem(media) {
-			var id = media.id;
-			var url = media.images.standard_resolution.url;
-			return "<div class='swiper-slide'><img src='" + url + "' id='" + id + "' /></div>";
+		function showDialog() {
+			var $swiperItems = $swiper.find('.swiper-slide img');
+			var index = Number($(this).attr('index'));
+
+			// update the swiper virtual scrolling dom
+			var media, url;
+			$swiperItems.each(function(i, item) {
+				media = mediaList[index + i];
+				url = media.images.standard_resolution.url;
+				item.src = url;
+			});
+
+			// reset swiper and show dialog!
+			swiper.reInit();
+			swiper.swipeTo(0, 0, false);
+			$dialog.removeClass('hidden'); 
 		}
 	});
 }
