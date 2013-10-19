@@ -33,7 +33,7 @@ api.listEvents = function(req, res) {
         .where('_event', _id)
         .where('removed').ne(true)
         .sort('-mediaId')
-        .limit(100);
+        .limit(500);
 
       // apply the min and max id conditions
       if(maxId) {
