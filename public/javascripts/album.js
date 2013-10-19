@@ -121,21 +121,23 @@ function initAlbum(eventId, pollInterval, slideInterval, debugMode) {
       $(".media_details").append("<div class='details_created fade3'>Date: "+(created.isBefore(new Date(), "day")? created.format("YYYY-MM-DD"): created.fromNow())+"</div>");
       $(".media_img_container img").attr("src", media.images.standard_resolution.url);
       $(".media_img_container img").removeClass(); // clear class
-      $(".media_img_container img").addClass('animated '+fx); // add animation class
-      
-      $(".media_details img").error(function () { 
-          $(this).attr("src", "/images/icons/anonymousUser.jpg");
-      });
-      $(".media_img_container img").error(function () { 
-          $(this).attr("src", "/images/logo4.png");
-      });
+      $(".media_img_container img").addClass('animated '+fx); // add animation class     
     }
 
+    fixMissingImgs();
     // recur slideNext    
     slideTimer = setTimeout(slideNext, slideInterval); // to-do: set this to 15 min for production
   }
 
-
+  // replace the missing images with placeholder images
+  function fixMissingImgs() {
+    $(".media_details img").error(function () { 
+        $(this).attr("src", "/images/icons/anonymousUser.jpg");
+    });
+    $(".media_img_container img").error(function () { 
+        $(this).attr("src", "/images/logo4.png");
+    });
+  }
 
   function findMediaItemById(id) {
     var l=cachedList.length;
@@ -177,12 +179,7 @@ function initAlbum(eventId, pollInterval, slideInterval, debugMode) {
         $(".media_img_container img").attr("class", "fade1");
       }
 
-      $(".media_details img").error(function () { 
-          $(this).attr("src", "/images/icons/anonymousUser.jpg");
-      });
-      $(".media_img_container img").error(function () { 
-          $(this).attr("src", "/images/logo4.png");
-      });
+      fixMissingImgs();
     }
   }
 
@@ -223,7 +220,8 @@ function initAlbum(eventId, pollInterval, slideInterval, debugMode) {
 
   function populateDetails(media) {
     var created = moment.unix(media.created_time);
-    return '<div class="media_popup"><div class="media_img_container"><img src="'+ media.images.standard_resolution.url +'" class="fade1"></div><div class="overlay_close"></div><div class="media_details"><div class="details_desc fade1">'+media.caption.text+'</div><img class="details_author_img fade2" src="'+media.user.profile_picture+'" ><div class="details_author fade2">By: '+media.user.full_name+'</div><div class="details_created fade3">Date: '+(created.isBefore(new Date(), "day")? created.format("YYYY-MM-DD"): created.fromNow())+'</div></div></div>';
+    var desc = media.caption === null? "": media.caption.text;
+    return '<div class="media_popup"><div class="media_img_container"><img src="'+ media.images.standard_resolution.url +'" class="fade1"></div><div class="overlay_close"></div><div class="media_details"><div class="details_desc fade1">'+desc+'</div><img class="details_author_img fade2" src="'+media.user.profile_picture+'" ><div class="details_author fade2">By: '+media.user.full_name+'</div><div class="details_created fade3">Date: '+(created.isBefore(new Date(), "day")? created.format("YYYY-MM-DD"): created.fromNow())+'</div></div></div>';
   }
 
   function createSwipe() {
@@ -263,9 +261,7 @@ function initAlbum(eventId, pollInterval, slideInterval, debugMode) {
           el = carousel.masterPages[i].querySelector('span');
           el.innerHTML = slides[upcoming];
 
-          $(".media_details img").error(function () { 
-              $(this).hide();
-          });
+          fixMissingImgs();
         }
       }
     });
