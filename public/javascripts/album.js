@@ -292,7 +292,7 @@ function initAlbum(eventId, pollInterval, slideInterval, debugMode) {
     myContentHeader.data( 'position', myContentHeader.position() );
 
     if(IS_IPAD) {
-      $(window).bind("touchmove touchend touchstart scroll", scrollHandler);  
+      // $(window).bind("touchmove touchend touchstart scroll", scrollHandler);  
       // append placeholders DOM
       var i;
       for(i=0; i<1000; i++) {
