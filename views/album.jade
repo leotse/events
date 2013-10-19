@@ -43,9 +43,13 @@ block content
   div.end_of_media
 
   //- back to top
-  a(id="action_scrolltop", href="#top") Top
+  a(id="action_scrolltop", href="#top") Top 
 
 block scripts
+  //- FB tags
+  meta(property="og:title" content="#{event.name}")
+  meta(property="og:image" content="http://www.capsulati.com/images/logo_fb.png")
+
   link(rel='stylesheet', href='/stylesheets/animate.min.css')
   script(type='text/javascript', src='/javascripts/libs/jquery.inview.min.js')
   script(type='text/javascript', src='/javascripts/libs/jquery.viewport.mini.js')
