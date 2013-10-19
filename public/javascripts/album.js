@@ -267,17 +267,20 @@ function initAlbum(eventId, pollInterval, slideInterval, debugMode) {
     });
   }
 
+  var $event = $(".event");
+  var $actionScrolltop = $("#action_scrolltop");
+
   function scrollHandler() {
     var hPos = myContentHeader.data('position'), scroll = getScroll();
     if ( hPos.top < scroll.top ) {
       myContentHeader.addClass('fixed');
-      $(".event").css("margin-top", "120px");
-      $("#action_scrolltop").addClass("active");
+      $event.css("margin-top", "120px");
+      $actionScrolltop.addClass("active");
     }
     else {
       myContentHeader.removeClass('fixed');
-      $(".event").css("margin-top", "0");
-      $("#action_scrolltop").removeClass("active");
+      $event.css("margin-top", "0");
+      $actionScrolltop.removeClass("active");
     }    
   }
 
