@@ -1,4 +1,4 @@
-#! /app/vendor/node/bin/node
+#! node
 
 //////////////////////
 // Scheduler Script //
